@@ -1,0 +1,54 @@
+.btn-outline-primary, .btn-primary {
+  --bs-btn-font-weight: 600;
+  --bs-btn-border-radius: .5rem;
+  --bs-btn-hover-border-color: var(--bs-btn-hover-bg);
+  --bs-btn-padding-x: 10px;
+  --bs-btn-padding-y: 7px;
+}
+
+.btn-primary {
+  --bs-btn-font-weight: 600;
+  --bs-btn-border-radius: .5rem;
+  background: rgb(148, 110, 220);
+  --bs-btn-border-color: var(--background);
+  --bs-btn-hover-bg:rgb(238,50,189);
+  --bs-btn-hover-color: black;
+  --bs-btn-active-bg:rgb(238,50,189);
+  --bs-btn-active-border-color:rgb(254,212,252);
+  --bs-btn-active-color: white;
+}
+
+.btn-outline-primary {
+  --bs-btn-font-weight: 600;
+  --bs-btn-border-radius: .5rem;
+  --bs-btn-bg: white;
+  --bs-btn-border-color: rgb(148,110,220);
+  --bs-btn-color:rgb(148,110,220);
+  --bs-btn-hover-bg:rgb(254,212,252);
+  --bs-btn-hover-color: rgb(238,50,189);
+}
+
+.navbar {
+  padding-left: 10px;
+  border: rgb(238, 50, 189);
+}
+
+.navbar-brand {
+  color: rgb(238, 50, 189);
+}
+
+.carousel-control-prev, .carousel-control-next {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.caro-text {
+  font-size: 110%;
+}
+
+.position-relative {
+  background-color: rgba(235, 235, 235, 0.6);
+}
+
+/*# sourceMappingURL=variables.css.map */
