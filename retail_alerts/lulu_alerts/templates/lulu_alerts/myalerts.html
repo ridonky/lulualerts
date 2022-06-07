@@ -14,7 +14,9 @@
         </ul>
     </div>
 </div>
+<div class="container my-3 bg-light">
 <table class="table">
+{% if alerts|length > 0 %}
     <tr>
         <th>Name</th>
         <th>Alert type</th>
@@ -28,7 +30,18 @@
         <td>{{alert.dateset}}</td>
         <td>{{alert.status}}</td>
     </tr>
-    {% endfor %} 
+    {% endfor %}
+    {% else %}
+    <tbody style="color: rgb(211, 211, 211);">
+    <tr>
+        <th> Alerts </th>
+    </tr>
+    <tr>
+        <td style="font-style:italic;">No alerts</td>
+    </tr>
+    </tbody>
+    {% endif %}
 </table>
+</div>
 </div>
 {% endblock %}

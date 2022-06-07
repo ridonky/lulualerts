@@ -4,7 +4,9 @@ from django.http import HttpResponse
 # Create your views here.
 
 alerts = [{"name":"Define Jacket - Size S - Blue, Gray, + 5 more colors","type":"Price drop","dateset":"5/22/2022","status":"Active"},
-{"name":"Scuba Hoodie - Size XS, S - Any colors","type":"Back in stock","dateset":"5/20/2022","status":"Notification sent 5/31/2022!"}]
+ {"name":"Scuba Hoodie - Size XS, S - Any colors","type":"Back in stock","dateset":"5/20/2022","status":"Notification sent 5/31/2022!"}]
+
+# alerts = []
 
 def index(request):
     return render(request, "lulu_alerts/index.html")
