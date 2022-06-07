@@ -9,6 +9,6 @@ urlpatterns = [
     path("products", views.products, name="products"),
     path("login", views.login, name="login"),
     path("signup", views.signup, name="signup"),
-    path("new_alert=<str:alert_type>", views.newalert, name="newalert"),
+    path("new_alert=<alert_type>", views.newalert, name="newalert"),
     path("myalerts", views.myalerts,name="myalerts")
 ]

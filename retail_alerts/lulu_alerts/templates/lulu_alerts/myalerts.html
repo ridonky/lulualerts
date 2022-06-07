@@ -9,14 +9,16 @@
         New alert
         </button>
         <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <li><a class="dropdown-item" href="#">Price drop</a></li>
-            <li><a class="dropdown-item" href="#">Back in stock</a></li>
+            <!--https://stackoverflow.com/questions/4591525/is-it-possible-to-pass-query-parameters-via-djangos-url-template-tag --> 
+            <li><a class="dropdown-item" href="{% url 'lulu_alerts:newalert' alert_type='price_drop' %}">Price drop</a></li>
+            <li><a class="dropdown-item" href="{% url 'lulu_alerts:newalert' alert_type='back_in_stock' %}">Back in stock</a></li>
         </ul>
     </div>
 </div>
 <div class="container my-3 bg-light">
 <table class="table">
 {% if alerts|length > 0 %}
+<!-- can see the empty condition at 1:36 ish -->
     <tr>
         <th>Name</th>
         <th>Alert type</th>
@@ -29,6 +31,9 @@
         <td>{{alert.type}}</td>
         <td>{{alert.dateset}}</td>
         <td>{{alert.status}}</td>
+        <!--
+        <td> {{alert}} </td>
+        -->
     </tr>
     {% endfor %}
     {% else %}

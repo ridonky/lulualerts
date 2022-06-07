@@ -4,8 +4,10 @@
 <div class="container">
     {% if alert_type == "price_drop" %}
         <h1> Create new alert </h1>
-        <form>
-
+        <form action="{% url 'lulu_alerts:newalert' alert_type='price_drop' %}" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type = "submit">
         </form>
     {% elif alert_type == "back_in_stock" %}
         <div>its in stock</div>
