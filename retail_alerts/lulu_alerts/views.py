@@ -1,7 +1,10 @@
+from click import pass_obj
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
 from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -19,14 +22,28 @@ def index(request):
 def products(request):
     return render(request, "lulu_alerts/products.html")
 
-def login(request):
-    return render(request, "lulu_alerts/login.html")
+def login_view(request):
+    if request.method == "GET":
+        return render(request, "lulu_alerts/login.html")
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST ["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request,user)
+            return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
+    else:
+        return render(request, "lulu_alerts/login.html", {"message": "Invalid credentials"})
+
+def logout(request):
+    pass
 
 def signup(request):
     return render(request, "lulu_alerts/signup.html")
 
 # logged in views
 
+@login_required(login_url='lulu_alerts:login')
 def newalert(request, alert_type):
     if request.method == "POST":
         form = NewAlertForm(request.POST)
@@ -46,7 +63,12 @@ def newalert(request, alert_type):
         "form": NewAlertForm()
     })
 
+@login_required(login_url='lulu_alerts:login')
 def myalerts(request):
+    # if not request.user.is_authenticated:
+    #     return HttpResponseRedirect(reverse("lulu_alerts:login"))
+    #WOW the login_required decorator works instead of this!!!
+
     if "alerts" not in request.session:  # if there are no alerts, give them empty list.
         request.session["alerts"] = []
 

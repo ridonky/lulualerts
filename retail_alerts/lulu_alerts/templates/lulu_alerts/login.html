@@ -5,20 +5,24 @@
   <div class="container my-4">
     <div class="mx-5 px-5">
       <h5 class="px-4"> Login </h5>
-      <form class="border px-4 py-4 my-3 rounded bg-light">
+      {% if message %}
+      <div> {{ message }} </div>
+      {% endif %}
+      <form class="border px-4 py-4 my-3 rounded bg-light" action ="{% url 'lulu_alerts:login' %}" method="POST">
+        {% csrf_token %}
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <label for="exampleInputUsername1" class="form-label">Username</label>
+          <input type="text" class="form-control" name="username" id="exampleInputUsername1">
         </div>
         <div class="mb-3">
           <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+          <input type="password" class="form-control" name="password" id="exampleInputPassword1">
         </div>
-        <div class="mb-3 form-check">
+        <!-- <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="exampleCheck1">
           <label class="form-check-label" for="exampleCheck1">Remember me</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        </div> -->
+        <input type="submit" class="btn btn-primary" value="login">
       </form>
       <div class="px-4">Don't have an account yet?  <a href="{% url 'lulu_alerts:signup' %}">Sign up here!</a></div>
     </div>

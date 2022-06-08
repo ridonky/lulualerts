@@ -7,7 +7,7 @@ app_name="lulu_alerts"
 urlpatterns = [
     path("", views.index, name="index"),
     path("products", views.products, name="products"),
-    path("login", views.login, name="login"),
+    path("login", views.login_view, name="login"),
     path("signup", views.signup, name="signup"),
     path("new_alert=<alert_type>", views.newalert, name="newalert"),
     path("myalerts", views.myalerts,name="myalerts")
