@@ -5,6 +5,7 @@ from django import forms
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from datetime import date
 
 # Create your views here.
 
@@ -32,11 +33,8 @@ def login_view(request):
         if user is not None:
             login(request,user)
             return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
-    else:
-        return render(request, "lulu_alerts/login.html", {"message": "Invalid credentials"})
-
-def logout(request):
-    pass
+    
+    return render(request, "lulu_alerts/login.html", {"message": "Invalid credentials"})
 
 def signup(request):
     return render(request, "lulu_alerts/signup.html")
@@ -44,15 +42,20 @@ def signup(request):
 # logged in views
 
 @login_required(login_url='lulu_alerts:login')
+def logout_view(request):
+    logout(request)
+    return render(request, "lulu_alerts/login.html", {"message": "logged out."})
+
+@login_required(login_url='lulu_alerts:login')
 def newalert(request, alert_type):
     if request.method == "POST":
         form = NewAlertForm(request.POST)
         if form.is_valid():
             alert = form.cleaned_data["alert"]
-            request.session["alerts"] += [{"name":alert,"type":alert_type,"dateset":"today","status":"active"}] # UM WOW KEEP THE BRACKETS OR ELSE!
+            dateset = date.today().isoformat()
+            request.session["alerts"] += [{"name":alert,"type":alert_type,"dateset":dateset,"status":"active"}] # UM WOW KEEP THE BRACKETS OR ELSE!
             return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
         else:
-            print("i was post, but didnt return a form")
             return render(request,"lulu_alerts/newalert.html", {
                 "alert_type": alert_type,
                 "form": form
