@@ -31,7 +31,7 @@
                         <a class="nav-link {% block nav_item_login %}{% endblock nav_item_login %}" href="{% url 'lulu_alerts:login' %}">Login</a>
                       </li>
                       <li class="nav-item"> 
-                        <a class="nav-link" href="{% url 'lulu_alerts:signup' %}">Sign up</a>
+                        <a class="nav-link {% block nav_item_signup %}{% endblock nav_item_signup %}" href="{% url 'lulu_alerts:signup' %}">Sign up</a>
                       </li>
                     </ul>
                   </div>

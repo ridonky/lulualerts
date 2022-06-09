@@ -4,11 +4,20 @@
 <div class="container">
     {% if alert_type == "price_drop" %}
         <h1> Create new alert </h1>
-        <form action="{% url 'lulu_alerts:newalert' alert_type='price_drop' %}" method="POST">
-            {% csrf_token %}
-            {{ form }}
-            <input type = "submit">
-        </form>
+        <div>
+        <div class= "border rounded px-2 py-3 my-4" >
+            <h3>Paste product URL </h3>
+        </div>
+        <div style="text-align:center;"> <h4>OR</h4></div>
+        <div class="border rounded px-2 py-2 my-4">
+            <h3>Search for product</h3>
+            <form action="{% url 'lulu_alerts:newalert' alert_type='price_drop' %}" method="POST">
+                {% csrf_token %}
+                {{ form }}
+                <input type = "submit">
+            </form>
+        </div>
+    </div>
     {% elif alert_type == "back_in_stock" %}
         <div>its in stock</div>
         <div class="container">
