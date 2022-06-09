@@ -13,7 +13,7 @@ from datetime import date
 #  {"name":"Scuba Hoodie - Size XS, S - Any colors","type":"Back in stock","dateset":"5/20/2022","status":"Notification sent 5/31/2022!"}]
 
 class NewAlertForm(forms.Form):
-    alert = forms.CharField(label = "Alert name")
+    alert = forms.CharField(label="", label_suffix="")
 
 # alerts = []
 
