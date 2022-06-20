@@ -28,10 +28,14 @@
     </tr>
     {% for alert in alerts %}
     <tr>
-        <td>{{alert.name}}</td>
-        <td>{{alert.type}}</td>
-        <td>{{alert.dateset}}</td>
-        <td>{{alert.status}}</td>
+        <td>{{alert.product}}</td>
+        {% if alert.alert_type == "price_drop" %}
+        <td>Price drop</td>
+        {% else %}
+        <td>Back in stock</td>
+        {% endif %}
+        <td>{{alert.date_set}}</td>
+        <td>{{alert.status.status}}</td>
         <!--
         <td> {{alert}} </td>
         -->
