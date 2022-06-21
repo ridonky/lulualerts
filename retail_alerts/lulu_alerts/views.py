@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 import json
 
-from flask import Config
-from lulu_alerts.application import get_product_details
+
+from retail_alerts.application import get_product_details
 from django.contrib.auth.models import User
 from lulu_alerts.models import Products, Alerts, Alert_Status
 

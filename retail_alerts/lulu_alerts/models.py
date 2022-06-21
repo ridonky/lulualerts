@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from sqlalchemy import ForeignKey
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 
 # Create your models here.
 class Alert_Status(models.Model):
@@ -17,6 +17,7 @@ class Products(models.Model):
     price = models.IntegerField(blank=True)
     currency = models.CharField(max_length=6)
     url = models.URLField(max_length=200)
+    in_stock = models.BooleanField() # added this new....
 
     def __str__(self):
         return f"{self.name} in {self.color}, size {self.size}"
