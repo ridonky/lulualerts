@@ -8,7 +8,7 @@ from datetime import date
 import json
 
 
-from retail_alerts.application import get_product_details
+from application import get_product_details
 from django.contrib.auth.models import User
 from lulu_alerts.models import Products, Alerts, Alert_Status
 

@@ -58,7 +58,6 @@ def get_product_details(quote_page):
     # d['url_md'] = urls['md']
     
     # END FOR TEST ONLY
-    print(d)
     return d
 
 def get_color(quote_page):

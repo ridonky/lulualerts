@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from sqlalchemy import ForeignKey
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Alert_Status(models.Model):
@@ -34,7 +34,7 @@ class Alerts(models.Model):
     #double check this is how you do default?
 
     def __str__(self):
-        return f"{self.alert_type} alert ID {self.id} for user {self.user_id}: currently {self.status}, set {self.date_set} for product {self.product_id}"
+        return f"{self.alert_type} ID {self.id} for user {self.user_id}: currently {self.status}, set {self.date_set} for product {self.product_id}"
 
 class Alert_History(models.Model):
     alert = models.ForeignKey(Alerts,on_delete=models.CASCADE)
