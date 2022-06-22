@@ -1,8 +1,6 @@
 # THIS IS FOLLOWING THESE INSTRUCTIONS: https://www.youtube.com/watch?v=AS01VoC9l5w
 
-
-# i think i only need the following 4 lines if im testing ???
-# i can run:
+# i think i only need the following 4 lines if im testing ??? i can run:
     # 'python manage.py shell < application.py' 
 # from /retail_alerts, and it runs without the following 4 lines.
 
@@ -21,9 +19,8 @@ import requests
 from lulu_alerts.models import Products, Alerts, Alert_Status
 
 
-
 #1 color and size out of stock, regular page:
-quote_page = 'https://shop.lululemon.com/p/jackets-and-hoodies-jackets/Define-Jacket?color=1966&sz=4'
+# quote_page = 'https://shop.lululemon.com/p/jackets-and-hoodies-jackets/Define-Jacket?color=1966&sz=4'
 
 #2 color and size in stock, regular page
 # quote_page='https://shop.lululemon.com/p/jackets-and-hoodies-jackets/Define-Jacket?color=31382&sz=4'
@@ -50,14 +47,6 @@ def get_product_details(quote_page):
     d['price'] = price_currency['price']
     d['currency'] = price_currency['currency']
     d['url'] = quote_page
-
-    # THIS CAN HAPPEN LATER --- WHEN THE DB IS PINGING ??
-    # urls = url_processer(quote_page)
-    # print(urls)
-    # d['url_regular'] = urls['regular']
-    # d['url_md'] = urls['md']
-    
-    # END FOR TEST ONLY
     return d
 
 def get_color(quote_page):
@@ -117,13 +106,8 @@ def price(quote_page):
         print("couldn't get product details.. try again")
         return None
 
-
-# FOR TESTING
-get_product_details(quote_page)
-
-
 # URL Processer: normalizes user provided URL into 2 urls to get for sale pages
-def url_processer(quote_page):
+def urls_alt(quote_page):
     urls={}
     p = urlparse(quote_page)
     cleanpath = p.path.split("_")[0] # removes the sku from the URL if its there
@@ -142,7 +126,7 @@ def url_processer(quote_page):
 
 # Scheduled check for alert trigger
 def alerts_check():
-    active = Alerts.objects.filter(status=1)
+    active = Alerts.objects.filter(status=1) 
     price_drop_alerts = active.filter(alert_type = "price_drop")
     price_drop_check(price_drop_alerts)
     #continue writing this for back in stock alerts
@@ -154,7 +138,6 @@ def price_drop_check(alerts):
         dburl = alert.product.url
         url = confirm_url(dburl,alert.product)
         target_price = alert.target_price
-        #check the provided URL
         pricecheck = price(url)
         if pricecheck['currency'] == alert.product.currency:
             if pricecheck['price'] <= target_price:
@@ -171,12 +154,14 @@ def price_drop_check(alerts):
 # return the right url to look for for a particular product.
 def confirm_url(url,product):
     p = get_product_details(url)
-    if p['color'] != product.color:
-        pass
-        # might be wrong url
-    elif p['size'] != product.size:
-        pass
-        # might be wrong url
+    if p['color'] != product.color or p['size'] != product.size:
+        alt = urls_alt(url)
+        if get_size(alt['md']) == product.size and get_color(alt['md']) == product.color:
+            return alt['md']
+        elif get_size(alt['url']) == product.size and get_color(alt['md']) == product.color:
+            return alt['url']
+        else:
+            return None
     else:
         return url
     # all product details are on the product page its the right url, else process it

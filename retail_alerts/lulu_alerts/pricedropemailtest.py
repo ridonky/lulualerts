@@ -1,7 +1,8 @@
 from trycourier import Courier
 
-client = Courier(auth_token="pk_prod_SKCVSTMRXEMC0PJ70H5VNZ6H1H3F")
-# should make this a secret key? or see what's needed?
+client = Courier(auth_token="pk_prod_XYZ")
+#  make this a secret key
+# REMEMBER - to use this I will have to update the token, save as an environment variable - this is just a dummy token.
 
 resp = client.send_message(
   message={

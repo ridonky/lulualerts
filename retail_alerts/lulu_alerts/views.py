@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import date
-import json
+from django.forms import MultiValueField, MultiWidget, RadioSelect, TextInput
 
 
 from application import get_product_details
@@ -20,6 +20,19 @@ class ProductQueryForm(forms.Form):
 
 class ConfigAlertForm(forms.Form):
     target_price = forms.DecimalField(label="Alert when price drops below")
+
+# Test form - this is how you do a drop down!
+class Test_form(forms.Form):
+    EMAIL = 'EMAIL'
+    METHOD_CHOICES = [
+        (EMAIL, 'Email'),
+    ]
+    alert_method = forms.ChoiceField(
+        choices = METHOD_CHOICES,
+        error_messages={"required":"Text coming soon ;)"}
+    )
+# end test
+
 
 
 def index(request):
@@ -100,6 +113,7 @@ def newalert(request, alert_type):
             return render(request, "lulu_alerts/newalert.html", {
                 "product_form": product_form,
                 "alert_type": alert_type,
+                "form": Test_form()
             })
 
     else:
@@ -107,6 +121,7 @@ def newalert(request, alert_type):
             "product_form": ProductQueryForm(),
             "alert_config_form": ConfigAlertForm(),
             "alert_type": alert_type,
+            "form": Test_form()
     })
 
 @login_required
