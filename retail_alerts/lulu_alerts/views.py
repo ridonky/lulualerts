@@ -8,7 +8,7 @@ from datetime import date
 from django.forms import MultiValueField, MultiWidget, RadioSelect, TextInput
 
 
-from application import get_product_details
+from scripts.application import get_product_details
 from django.contrib.auth.models import User
 from lulu_alerts.models import Products, Alerts, Alert_Status
 

@@ -6,9 +6,12 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Alert_Status(models.Model):
     status = models.CharField(max_length=64)
+    # 1: 
 
     def __str__(self):
         return f"{self.id}: {self.status}"
+    
+
 
 class Products(models.Model):
     name = models.CharField(max_length=200)
@@ -53,13 +56,15 @@ class Notif_Origin(models.Model):
 class Notifications(models.Model):
     alert = models.ForeignKey(Alerts, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True)
-    sent_time = models.DateTimeField(blank=True)
-    complete_time = models.DateTimeField(blank=True)
+    sent_time = models.DateTimeField(blank=True, null=True),
+    complete_time = models.DateTimeField(blank=True, null=True)
     status = models.ForeignKey(Notif_Status, on_delete=models.CASCADE)
     type = models.CharField(max_length=20, default="email")
-    origin = models.ForeignKey(Notif_Origin, on_delete=models.CASCADE)
-    # Do i get / store some sort of configmration ID from the email send request?
+    origin = models.ForeignKey(Notif_Origin, blank=True, null=True, on_delete=models.CASCADE)
+    courier_response_id = models.CharField(max_length=200, blank=True)
 
+    def __str__(self):
+        return f"{self.id} is status {self.status}"
 
 # class "Now"?
     # postgres specific: https://docs.djangoproject.com/en/4.0/ref/contrib/postgres/functions/#django.contrib.postgres.functions.TransactionNow
