@@ -5,12 +5,12 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import date
-from django.forms import MultiValueField, MultiWidget, RadioSelect, TextInput
 
 
-from scripts.application import get_product_details
+from scripts.scrape import get_product_details
 from django.contrib.auth.models import User
 from lulu_alerts.models import Products, Alerts, Alert_Status
+from scripts.alertscheck import run
 
 # Create your views here.
 
@@ -161,6 +161,9 @@ def myalerts(request):
     return render(request, "lulu_alerts/myalerts.html", {
         "alerts": alerts,
     })
+
+run()
+
 
 # django stores session data in tables. 
 
