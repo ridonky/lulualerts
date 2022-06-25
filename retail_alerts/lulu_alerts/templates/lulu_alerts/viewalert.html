@@ -1,0 +1,72 @@
+{% extends "lulu_alerts/layout_loggedin.html" %}
+{% block nav_item_myalerts %} active {% endblock nav_item_myalerts %}
+
+{% block body %}
+<div class="container">
+<h1>Alert details</h1>
+<container>
+    <div class="row" style="position:relative;">
+        <div class="col">
+            <span style="position: absolute;bottom: 0; left: 1;">
+            <a href="{% url 'lulu_alerts:myalerts' %}" class="link"> < my alerts</a><span style="color: rgba(0, 0, 0, 0.55);"> / alert id {{alert.id}}</span></span>
+        </div>   
+        <div class="col justify-content-end">
+            <div class="dropdown d-flex justify-content-end"> 
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Options
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <!--https://stackoverflow.com/questions/4591525/is-it-possible-to-pass-query-parameters-via-djangos-url-template-tag --> 
+                    <li><a class="dropdown-item" href="#">Delete alert</a></li>
+                </ul> 
+            </div> 
+        </div>
+    </div>
+</container>
+<div class="container my-3 bg-light rounded">
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <tr>
+                    <th>Product name</th>
+                    <td>{{ alert.product.name }} </td>
+                </tr>
+                <tr>
+                    <th>Size </th>
+                    <td>{{alert.product.size}}</td>
+                </tr>
+                <tr>
+                    <th> Color </th>
+                    <td> {{ alert.product.color }}</td>
+                </tr>
+                <tr>
+                    <th> Product price </th>
+                    <td> ${{alert.product.price }}</td>
+                </tr>
+                <tr>
+                    <th>Alert type</th>
+                    {% if alert.alert_type == 'price_drop' %}
+                    <td> Price drop
+                    <br> Target price: ${{alert.target_price}} or less
+                    </td>
+                    {% else %}
+                    <td> Back in stock </td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th> Alert status </th>
+                    <td>{{alert.status.status}}</td>
+                </tr>
+                <tr>
+                    <th> Date set </th>
+                    <td> {{alert.date_set}}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- <div class="col-3 justify-content-left">
+            <img src="https://images.lululemon.com/is/image/lululemon/LW1DR9S_045650_1?wid=1600&op_usm=0.5,2,10,0&fmt=webp&qlt=80,1&fit=constrain,0&op_sharpen=0&resMode=sharp2&iccEmbed=0&printRes=72" class="rounded d-sm-flex">
+        </div>  -->
+    </div>
+    </div>
+</div>
+{% endblock %}
