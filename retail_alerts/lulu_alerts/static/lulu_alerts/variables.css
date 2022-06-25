@@ -51,4 +51,15 @@
   background-color: rgba(235, 235, 235, 0.6);
 }
 
+.link {
+  color: rgb(111, 150, 255);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: rgb(238, 50, 189);
+  text-decoration: none;
+}
+
 /*# sourceMappingURL=variables.css.map */

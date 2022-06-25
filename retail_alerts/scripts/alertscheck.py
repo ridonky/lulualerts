@@ -118,7 +118,7 @@ def confirm_notif(notif_response_id):
 
 def run():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(alerts_check,'interval',minutes=1)
+    scheduler.add_job(alerts_check,'interval',minutes=30)
     print('program running')
     scheduler.start()
     

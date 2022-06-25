@@ -1,3 +1,5 @@
+// to apply changes, run sass variables.scss:variables.css -- have to be IN static/lulu_alerts
+
 // custom theme colors
 $c-orange: rgb(255,199,115);
 $c-l-purple: rgb(254,212,252);
@@ -67,4 +69,15 @@ $c-blue-cadet: #3B3561;
 
 .position-relative{
   background-color: rgb(235, 235, 235,.6);
+}
+
+.link{
+  color: $c-blue;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.link:hover{
+  color: $c-hot-pink;
+  text-decoration:none;
 }

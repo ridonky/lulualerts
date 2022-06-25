@@ -4,36 +4,27 @@
 <!-- form validaiton with bootstrap is here: https://getbootstrap.com/docs/5.2/forms/validation/-->
 
 {% block body %}
+{{ messages }}
 <div class="container my-4">
     <div class="mx-2 px-5">
     <!-- change mx-2 to change width of container! -->  
       <h4 style="text-align:center;"> Sign up </h4>
       <!--
       <form class="border px-4 py-4 my-3 rounded"> -->
-        <form class="border px-4 py-3 my-3 rounded bg-light">
+        <form class="border px-4 py-3 my-3 rounded bg-light" method="post"> <!-- not sure i need the method = post? -->
           <div class="row justify-content-center">
-            <div class="mb-3 px-4 col-12">
-                <label for="firstName" class="form-label">First name</label>
-                <input type="text" class="form-control" id="firstName" required>
+            {% csrf_token %}
+            {% for fields in form %}
+              <div class="mb-3 px-4 col-12">
+                <div class="form-label">
+                {{ fields.label }}
+                </div>
+                {{ fields }}
+                <div class="form-text text-muted">
+                {{ fields.help_text }}
+                </div>
               </div>
-            <div class="mb-3 px-4 col-12">
-              <label for="inputEmail4" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="inputEmail4" required>
-              <div id="emailHelp" class="form-text">Your email is required to recieve notifications.  We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3 px-4 col-12">
-                <label for="userName" class="form-label">Username</label>
-                <input type="text" class="form-control" id="userName" required>
-            </div>
-            <div class="mb-3 px-4 col-12">
-              <label for="inputPassword4" class="form-label">Password</label>
-              <input type="password" class="form-control" id="inputPassword4" required>
-              <div id="passwordHelp" class="form-text">Your password must be 8-20 characters long. </div>
-            </div>
-            <div class="mb-3 px-4 col-12">
-              <label for="confirmPassword" class="form-label">Confirm password</label>
-              <input type="password" class="form-control" id="confirmPassword" required>
-            </div>
+            {% endfor %}
             <div class="mt-2 mx-3 px-4 col-12">
               <button type="submit" class="btn btn-primary">Sign up</button>
             </div>

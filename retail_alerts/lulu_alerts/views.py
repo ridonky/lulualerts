@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import date
-
+from django.contrib import messages
 
 from scripts.scrape import get_product_details
 from django.contrib.auth.models import User
@@ -34,6 +35,58 @@ class Test_form(forms.Form):
 # end test
 
 
+# user signup form!
+class CustomUserCreationForm(UserCreationForm):
+    # firstname = forms.CharField(label='First name', max_length=30, required=True,widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    # email = forms.EmailField(label='Email address', help_text="Your email is required to recieve notifications. We'll never share it with anyone else.", required=True, widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    password1 = forms.CharField(label='Password', 
+        help_text='Your password must contain at least 8 characters.', 
+        required=True, 
+        widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    password2 = forms.CharField(label='Confirm Password', 
+        help_text='Enter the same password as before, for verification.', 
+        required=True, 
+        widget=forms.PasswordInput(attrs={'class':'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ("first_name", "email", "username", "password1", "password2")
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+    def check_password_match(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(messages="Passwords don't match")
+            return None
+        return password1
+
+    def check_valid_password(self):
+        password = self.cleaned_data['password1']
+        if len(password) < 8:
+            # raise forms.ValidationError(message="Password too short!~")
+            return None
+        return password
+
+    def save(self, commit=True): 
+        user = super(CustomUserCreationForm, self).save(commit=False) # what??
+        user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.username = self.cleaned_data['username']
+        user.password = self.cleaned_data['password1']
+        user.is_staff=False
+        if commit:
+            user.save()
+        return user
+
+    
+# end new user signup form
+
+
 
 def index(request):
     return render(request, "lulu_alerts/index.html")
@@ -54,10 +107,42 @@ def login_view(request):
     
     return render(request, "lulu_alerts/login.html", {"message": "Invalid credentials"})
 
-def signup(request):
-    return render(request, "lulu_alerts/signup.html")
+# def signup(request):
+#     return render(request, "lulu_alerts/signup.html")
 
 # logged in views
+def signup(request):
+    if request.method == "POST":
+        form=CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            print('formisvalid')
+            pw = form.check_password_match()
+            if pw != form['password1']:
+                print('pw didntmatch')
+                # raise forms.ValidationError(message="Password must be at least 8 characters long.")
+                return render(request, "lulu_alerts/signup.html",{"form":form, "messages":messages})
+            elif form.check_valid_password() != pw:
+                # messages = messages.error(request)
+                print('pw not valid')
+                return render(request, "lulu_alerts/sign_up.html",{"form":form})
+            form.save()
+            # messages = messages.success(request, 'Account created successfully')  
+            return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
+        # messages = messages.error(request,"Unsuccessful registration. Invalid information.")
+        else:
+            print('formisnotvalid')
+    form = CustomUserCreationForm()
+    return render(request,"lulu_alerts/signup.html",{"form": form, "messages":''})
+
+# validate user and id access
+def user_alert_id_permission(request,id):
+    try:
+        alert = Alerts.objects.get(id=id)
+        if alert.user == request.user:
+            return True
+    except:
+        Exception
+
 
 @login_required(login_url='lulu_alerts:login')
 def logout_view(request):
@@ -123,6 +208,17 @@ def newalert(request, alert_type):
             "alert_type": alert_type,
             "form": Test_form()
     })
+
+@login_required
+def view_alert(request,id):
+    if user_alert_id_permission(request,id):
+        alert = Alerts.objects.get(id=id)
+        return render(request, "lulu_alerts/viewalert.html", 
+        {"id":id,
+        "alert":alert})
+    else:
+        return redirect("lulu_alerts:myalerts")
+    # HttpResponse(f"Alert id is {id}")
 
 @login_required
 def product_query(request):
