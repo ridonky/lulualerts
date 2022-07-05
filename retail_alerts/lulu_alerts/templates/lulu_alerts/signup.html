@@ -4,16 +4,19 @@
 <!-- form validaiton with bootstrap is here: https://getbootstrap.com/docs/5.2/forms/validation/-->
 
 {% block body %}
-{{ messages }}
 <div class="container my-4">
     <div class="mx-2 px-5">
     <!-- change mx-2 to change width of container! -->  
       <h4 style="text-align:center;"> Sign up </h4>
       <!--
       <form class="border px-4 py-4 my-3 rounded"> -->
+        {% if message %}
+        <div class="alert alert-warning" role="alert">{{ message }}</div>
+        {% endif %}
         <form class="border px-4 py-3 my-3 rounded bg-light" method="post"> <!-- not sure i need the method = post? -->
           <div class="row justify-content-center">
             {% csrf_token %}
+            <form action="{% url 'lulu_alerts:myalerts'}" method="post"> 
             {% for fields in form %}
               <div class="mb-3 px-4 col-12">
                 <div class="form-label">
@@ -26,10 +29,11 @@
               </div>
             {% endfor %}
             <div class="mt-2 mx-3 px-4 col-12">
-              <button type="submit" class="btn btn-primary">Sign up</button>
+              <input type="submit" class="btn btn-primary" value="Sign up">
             </div>
+          </form>
           </div> 
       </form>
   </div>
-  </div>
+</div>
 {% endblock %}
