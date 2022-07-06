@@ -33,6 +33,9 @@ import requests
 #4 color and size in stock, MD page -- THIS ONE hAS "HURRY ALMOST OUT OF STOCK"
 # quote_page='https://shop.lululemon.com/p/women-pants/Align-Pant-2-MD/_/prod8360162?color=51039&sz=4'
 
+#5 ccolor and lenght selected but no size selected, regular page
+# quote_page = 'https://shop.lululemon.com/p/women-crops/Wunder-Train-HR-Crop-21/_/prod9750624?color=26083'
+
 
 # Get all product details
 def get_product_details(quote_page):
@@ -80,6 +83,8 @@ def stock_status(quote_page):
 # Get item price
 def price(quote_page):
     price_currency = {}
+    # set defaults for exception handling
+    price_currency['price'],price_currency['currency'] = 0,'USD'
     r = requests.get(quote_page)
     soup = BeautifulSoup(r.text, 'html.parser')
     try:
@@ -90,7 +95,7 @@ def price(quote_page):
                 if p['class'] == []:
                     price = p.text.strip()
                     if '-' in price:
-                        return None # a price wasn't selected, its a range
+                        return price_currency # a price wasn't selected, its a range
                     price_currency['price'] = (price.split()[0])[1:]
                     price_currency['currency'] = price.split()[1]
                     return price_currency
@@ -99,11 +104,10 @@ def price(quote_page):
             for p in price:
                 price = p.text.strip()
                 if '-' in price:
-                    return None # a price wasn't selected, its a range
+                    return price_currency # a price wasn't selected, its a range
                 price_currency['price'] = (price.split()[0])[1:]
                 price_currency['currency'] = price.split()[1]
                 return price_currency
     except:
         Exception
-        print("couldn't get product details.. try again")
-        return None
+        return price_currency

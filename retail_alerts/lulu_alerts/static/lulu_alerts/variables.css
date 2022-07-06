@@ -31,6 +31,7 @@
 .navbar {
   padding-left: 10px;
   border: rgb(238, 50, 189);
+  background: white;
 }
 
 .navbar-brand {
@@ -60,6 +61,84 @@
 .link:hover {
   color: rgb(238, 50, 189);
   text-decoration: none;
+}
+
+.sidebar-menu {
+  font-family: var(--bs-body-font-family);
+  font-size: 16px;
+  line-height: 30px;
+  opacity: 1;
+  padding: 16px NaNpx;
+  justify-content: left;
+  color: #565e6c;
+  background: transparent;
+  border-radius: 4px;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* Sidebar menu 20 - Item */
+.sidebar-menu-item, .sidebar-menu-item-selected {
+  padding: 16px NaNpx;
+  display: flex;
+  justify-content: left;
+  color: #565e6c;
+  background: transparent;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* Sidebar menu 20 - Selected item */
+.sidebar-menu-item-selected {
+  font-weight: bold;
+  color: #007483;
+  background: #c8f9ff;
+  position: relative;
+}
+
+/* Sidebar menu 20 - Icon */
+.sidebar-menu-icon {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+/* for the page */
+.new-alert-page-background {
+  background: #f9f9fa;
+  font-family: var(--bs-body-font-family);
+  color: #bcc1ca;
+}
+
+.rectangle {
+  height: 70vh;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-width: 3px;
+  border-color: #dee1e6;
+  border-style: dashed;
+  justify-content: center;
+  display: flex;
+}
+
+.new-alert-modal {
+  display: flex;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0px 4px 9px #dee1e6, 0px 0px 2px #dee1e6;
+  color: #171a1f;
+}
+
+.product-details-page {
+  color: var(--bs-body-color);
+}
+
+.product-details-rectangle {
+  background: white;
+  border-style: solid;
+  border-color: #dee1e6;
+  display: flex;
+  border-width: 1px;
 }
 
 /*# sourceMappingURL=variables.css.map */

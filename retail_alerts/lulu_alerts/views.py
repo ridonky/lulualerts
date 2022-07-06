@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django import forms
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import date
-from django.contrib import messages
+import json
 
 from scripts.scrape import get_product_details
 from django.contrib.auth.models import User
@@ -15,12 +15,13 @@ from scripts.alertscheck import run
 
 # Create your views here.
 
-
+# For for product URL
 class ProductQueryForm(forms.Form):
-    productquery = forms.URLField(label="", label_suffix="")
-
-class ConfigAlertForm(forms.Form):
-    target_price = forms.DecimalField(label="Alert when price drops below")
+    productquery = forms.URLField(
+        label="", 
+        label_suffix="", 
+        help_text="Remember to select your size and color at lululemon.com",
+        widget=forms.URLInput(attrs={"class":"form-control", "autofocus":"autofocus"}))
 
 # Test form - this is how you do a drop down!
 class Test_form(forms.Form):
@@ -30,17 +31,17 @@ class Test_form(forms.Form):
     ]
     alert_method = forms.ChoiceField(
         choices = METHOD_CHOICES,
-        error_messages={"required":"Text coming soon ;)"}
+        error_messages={"required":"Must provide email"}
     )
 # end test
 
-
-# user signup form!
+# Form for user signup
 class CustomUserCreationForm(UserCreationForm):
     # firstname = forms.CharField(label='First name', max_length=30, required=True,widget=forms.TextInput(attrs={'class' : 'form-control'}))
     # email = forms.EmailField(label='Email address', help_text="Your email is required to recieve notifications. We'll never share it with anyone else.", required=True, widget=forms.TextInput(attrs={'class' : 'form-control'}))
     password1 = forms.CharField(label='Password', 
-        help_text='Your password must contain at least 8 characters.', 
+        help_text='Your password must contain at least 8 characters.',
+        min_length=8, 
         required=True, 
         widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2 = forms.CharField(label='Confirm Password', 
@@ -48,9 +49,44 @@ class CustomUserCreationForm(UserCreationForm):
         required=True, 
         widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
+    usd_currency = 'USD'
+    cad_currency = 'CAD'
+    choices = [
+        (usd_currency, 'USD'),
+        (cad_currency, 'CAD')
+    ]
+
+    
+    country = forms.ChoiceField(label='Choose currency',
+        choices = choices,
+        required=True,
+        error_messages={"required":"Please select a currency."},
+        widget=forms.Select(attrs={'class':'form-select'}),
+    )
+
+    default_price = "Whenever price drops below current price"
+    custom_price = "Select my OWN DAMN price"
+    # https://stackoverflow.com/questions/38473957/how-to-add-text-box-next-to-a-radio-button
+    
+    custom_price_input = forms.CharField(
+        widget = forms.TextInput(attrs={'class':'form-control'}),
+        label=''
+    )
+
+    price_choices = [ 
+        (default_price, "Whenever price drops below current price"), 
+        (custom_price, "Select my own price"),
+    ]
+
+    select_price = forms.ChoiceField(label="Select price",
+        choices = price_choices,
+        required=True,
+        widget=forms.RadioSelect(attrs={'class':'form-check'})
+    )
+
     class Meta:
         model = User
-        fields = ("first_name", "email", "username", "password1", "password2")
+        fields = ("first_name", "email", "username", "country", "password1", "password2","select_price","custom_price_input")
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -59,18 +95,13 @@ class CustomUserCreationForm(UserCreationForm):
 
     def check_password_match(self):
         password1 = self.cleaned_data.get("password1")
+        print("im checking")
         password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError(messages="Passwords don't match")
-            return None
-        return password1
-
-    def check_valid_password(self):
-        password = self.cleaned_data['password1']
-        if len(password) < 8:
-            # raise forms.ValidationError(message="Password too short!~")
-            return None
-        return password
+        if password1 != password2:
+            print('its false')
+            return False
+        print('its true')
+        return True
 
     def save(self, commit=True): 
         user = super(CustomUserCreationForm, self).save(commit=False) # what??
@@ -82,10 +113,6 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
-
-    
-# end new user signup form
-
 
 
 def index(request):
@@ -107,32 +134,37 @@ def login_view(request):
     
     return render(request, "lulu_alerts/login.html", {"message": "Invalid credentials"})
 
-# def signup(request):
-#     return render(request, "lulu_alerts/signup.html")
-
 # logged in views
 def signup(request):
     if request.method == "POST":
+        message=[]
         form=CustomUserCreationForm(request.POST)
         if form.is_valid():
             print('formisvalid')
-            pw = form.check_password_match()
-            if pw != form['password1']:
-                print('pw didntmatch')
-                # raise forms.ValidationError(message="Password must be at least 8 characters long.")
-                return render(request, "lulu_alerts/signup.html",{"form":form, "messages":messages})
-            elif form.check_valid_password() != pw:
-                # messages = messages.error(request)
-                print('pw not valid')
-                return render(request, "lulu_alerts/sign_up.html",{"form":form})
+            print(form.cleaned_data)        
             form.save()
-            # messages = messages.success(request, 'Account created successfully')  
-            return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
-        # messages = messages.error(request,"Unsuccessful registration. Invalid information.")
+            username = form.cleaned_data["username"]
+            print(username)
+            password = form.cleaned_data["password1"]
+            print(password)
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request,user)
+                return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
+            elif not form.check_password_match():
+                message.append("Passwords must match.")
+                return render(request,"lulu_alerts/signup.html", {
+                    "form":form,
+                    "message":message
+                })
         else:
-            print('formisnotvalid')
+            message.append("Signup failed.")
+            return render(request, "lulu_alerts/signup.html", {
+                "form":form,
+                "message":message
+                })
     form = CustomUserCreationForm()
-    return render(request,"lulu_alerts/signup.html",{"form": form, "messages":''})
+    return render(request,"lulu_alerts/signup.html",{"form": form})
 
 # validate user and id access
 def user_alert_id_permission(request,id):
@@ -153,7 +185,6 @@ def logout_view(request):
 def newalert(request, alert_type):
     if request.method == "POST": # can i also check like a request id??  for actually submitting to DB
         if 'target_price' in request.POST:
-            print(request.POST)
             target_price = request.POST['target_price']
             product = get_product_details(request.POST['url'])
             if target_price == "current_price":
@@ -204,12 +235,90 @@ def newalert(request, alert_type):
     else:
         return render(request,"lulu_alerts/newalert.html", {
             "product_form": ProductQueryForm(),
-            "alert_config_form": ConfigAlertForm(),
+            # "alert_config_form": ConfigAlertForm(),
             "alert_type": alert_type,
             "form": Test_form()
     })
 
-@login_required
+
+def lulu_url_check():
+    # check if its a lulu url
+    pass
+
+@login_required(login_url='lulu_alerts:login')
+def newalertv2(request,alert_type):
+    if ProductQueryForm(request.POST):
+        product_form = ProductQueryForm(request.POST)
+        if product_form.is_valid():
+            url = product_form.cleaned_data['productquery']
+            product = get_product_details(url)
+            # product = json.dumps(product)
+            print("attempting to render next page")
+            request.session['product']=product # store it in the session instead of requiring args for now...
+            request.session['alert_type']=alert_type
+            request.session['url']=url
+            return HttpResponseRedirect(reverse("lulu_alerts:newalert_confirmproduct")) # kwargs={'alert_type':alert_type, 'url':'url', 'product':product}))
+            return render(request, "lulu_alerts/newalert_v2.html",{
+                "product_form": product_form,
+                "product":product,
+                "alert_type":alert_type,
+                "url":url
+            })
+        else: #form is not valid, give them whats there.
+            print("fucking invalid form")
+            return render(request,"lulu_alerts/newalert_v2.html",{
+                "product_form":product_form,
+                "alert_type":alert_type
+            })
+    print("treating it like a get req")
+    return render(request, "lulu_alerts/newalert_v2.html", {
+        "product_form": ProductQueryForm(),
+        "alert_type": alert_type,
+    })
+
+
+@login_required(login_url='lulu_alerts:login')
+def newalert_confirmproduct(request): #alert_type,url,product
+    product = request.session['product']
+    url = request.session['url']
+    alert_type = request.session['alert_type']
+    if request.method == "POST":
+        # for a price drop alert with a target price:
+        price=request.POST["price"]
+        if alert_type == 'price_drop':
+            target_price = request.POST['target_price']
+            if target_price == "current_price":
+                t_price = int(price) - .01
+            else:
+                t_price = request.POST['target_price_custom']
+        elif alert_type == 'back_in_stock':
+            t_price = 0
+
+        p = Products.objects.create(name=request.POST['product_name'], color=request.POST['color'], size=request.POST["size"], price=price,url=request.POST["url"],currency=request.POST["currency"],in_stock=product['in_stock'])
+        p.save()
+        u = User.objects.get(username = request.user)
+        s = Alert_Status.objects.get(id=1)
+        alert = Alerts.objects.create(product=p,user=u,alert_type=alert_type,status=s,target_price=t_price,date_set=date.today(),alert_method="email")
+        alert.save()
+
+        # fetch users list of alerts to pass them to my alerts!
+        alerts = Alerts.objects.filter(user=u.id).order_by('-id')
+
+        new_alert_message = "new alert created!"
+        return render(request, "lulu_alerts/myalerts.html", {
+            # alert message to make it nice and confirmy
+            "new_alert_message":new_alert_message,
+            # dont think we need alert type???
+            "alert_type": alert_type, 
+            "alerts": alerts
+        })
+    return render(request,"lulu_alerts/newalert_confirmproduct.html", {
+        "product":product,
+        "url":url,
+        "alert_type":alert_type,
+    })
+
+@login_required(login_url='lulu_alerts:login')
 def view_alert(request,id):
     if user_alert_id_permission(request,id):
         alert = Alerts.objects.get(id=id)
@@ -218,42 +327,13 @@ def view_alert(request,id):
         "alert":alert})
     else:
         return redirect("lulu_alerts:myalerts")
-    # HttpResponse(f"Alert id is {id}")
 
-@login_required
-def product_query(request):
-    if request.method == "POST":
-        form = ProductQueryForm(request.POST)
-        if form.is_valid():
-            cleaned = form.cleaned_data
-            print(cleaned["productquery"])
-            return render(request,"lulu_alerts/product_query.html", {
-                "product":get_product_details(cleaned["productquery"]),
-                "form": form
-            })
-        else:
-            return render(request, "lulu_alerts/product_query.html", {
-                "form": form
-            })
-
-    else:
-        return render(request,"lulu_alerts/product_query.html", {
-        "form": ProductQueryForm()
-    })
 
 @login_required(login_url='lulu_alerts:login')
 def myalerts(request):
-    # if not request.user.is_authenticated:
-    #     return HttpResponseRedirect(reverse("lulu_alerts:login"))
-    #WOW the login_required decorator works instead of this!!!
-    # u = User.objects.get(username=request.user)
-    # alerts = Alerts.objects.filter(user=u.id)
     if 'alerts' not in request.GET or request.POST:
         u = User.objects.get(username=request.user)
         alerts = Alerts.objects.filter(user=u.id).order_by('-id')
-        # if len(alerts) < 1:
-        #     alerts = []
-
     return render(request, "lulu_alerts/myalerts.html", {
         "alerts": alerts,
     })
@@ -262,26 +342,3 @@ run()
 
 
 # django stores session data in tables. 
-
-
-
-
-
-
-    # if request.method == "POST":
-    #     form = NewAlertForm(request.POST)
-    #     if form.is_valid():
-    #         alert = form.cleaned_data["alert"]
-    #         dateset = date.today().isoformat()
-    #         request.session["alerts"] += [{"name":alert,"type":alert_type,"dateset":dateset,"status":"active"}] # UM WOW KEEP THE BRACKETS OR ELSE!
-    #         return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
-    #     else:
-    #         return render(request,"lulu_alerts/newalert.html", {
-    #             "alert_type": alert_type,
-    #             "form": form
-    #         })
-
-    # return render(request, "lulu_alerts/newalert.html", {
-    #     "alert_type": alert_type,
-    #     "form": NewAlertForm()
-    # })
