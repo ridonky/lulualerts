@@ -152,7 +152,7 @@ def run():
     scheduler = BackgroundScheduler()
     scheduler.add_job(alerts_check,'interval',minutes=1)
     print('program running')
-    scheduler.start()
+    # scheduler.start()
     
 
 

@@ -56,7 +56,6 @@ class CustomUserCreationForm(UserCreationForm):
         (cad_currency, 'CAD')
     ]
 
-    
     country = forms.ChoiceField(label='Choose currency',
         choices = choices,
         required=True,
@@ -64,32 +63,12 @@ class CustomUserCreationForm(UserCreationForm):
         widget=forms.Select(attrs={'class':'form-select'}),
     )
 
-    default_price = "Whenever price drops below current price"
-    custom_price = "Select my OWN DAMN price"
-    # https://stackoverflow.com/questions/38473957/how-to-add-text-box-next-to-a-radio-button
-    
-    custom_price_input = forms.CharField(
-        widget = forms.TextInput(attrs={'class':'form-control'}),
-        label=''
-    )
-
-    price_choices = [ 
-        (default_price, "Whenever price drops below current price"), 
-        (custom_price, "Select my own price"),
-    ]
-
-    select_price = forms.ChoiceField(label="Select price",
-        choices = price_choices,
-        required=True,
-        widget=forms.RadioSelect(attrs={'class':'form-check'})
-    )
-
     class Meta:
         model = User
-        fields = ("first_name", "email", "username", "country", "password1", "password2","select_price","custom_price_input")
+        fields = ("first_name", "email", "username", "country", "password1", "password2")
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', "autofocus":"autofocus"}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
 
@@ -105,13 +84,14 @@ class CustomUserCreationForm(UserCreationForm):
 
     def save(self, commit=True): 
         user = super(CustomUserCreationForm, self).save(commit=False) # what??
-        user.email = self.cleaned_data['email']
-        user.first_name = self.cleaned_data['first_name']
-        user.username = self.cleaned_data['username']
-        user.password = self.cleaned_data['password1']
-        user.is_staff=False
+        # user.email = self.cleaned_data['email']
+        # user.first_name = self.cleaned_data['first_name']
+        # user.username = self.cleaned_data['username']
+        # user.password = self.cleaned_data['password1']
+        # user.is_staff=False
         if commit:
             user.save()
+        print(user)
         return user
 
 
@@ -128,6 +108,7 @@ def login_view(request):
         username = request.POST["username"]
         password = request.POST ["password"]
         user = authenticate(request, username=username, password=password)
+        print(user)
         if user is not None:
             login(request,user)
             return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
@@ -137,7 +118,6 @@ def login_view(request):
 # logged in views
 def signup(request):
     if request.method == "POST":
-        message=[]
         form=CustomUserCreationForm(request.POST)
         if form.is_valid():
             print('formisvalid')
@@ -152,13 +132,14 @@ def signup(request):
                 login(request,user)
                 return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
             elif not form.check_password_match():
-                message.append("Passwords must match.")
+                message=("Passwords must match.")
                 return render(request,"lulu_alerts/signup.html", {
                     "form":form,
                     "message":message
                 })
         else:
-            message.append("Signup failed.")
+            message = form.errors.as_text()
+            # message.append("Signup failed.")
             return render(request, "lulu_alerts/signup.html", {
                 "form":form,
                 "message":message
