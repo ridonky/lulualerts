@@ -14,7 +14,7 @@ from time import sleep
 from datetime import datetime
 import requests
 import json
-from scripts.scrape import price #, get_product_details, get_size, get_color
+from scripts.scrape import price, stock_status #, get_product_details, get_size, get_color
 
 # Set up scheduler
 #reference: https://github.com/agronholm/apscheduler/blob/3.x/examples/schedulers/background.py
@@ -24,7 +24,10 @@ from apscheduler.schedulers.background import BackgroundScheduler
 def alerts_check():
     active = Alerts.objects.filter(status=1) 
     price_drop_alerts = active.filter(alert_type = "price_drop")
+    back_in_stock_alerts = active.filter(alert_type = "back_in_stock")
+    print(f'bis alerts include {back_in_stock_alerts}')
     price_drop_check(price_drop_alerts)
+    back_in_stock_check(back_in_stock_alerts)
     #continue writing this for back in stock alerts
 
 def price_drop_check(alerts):
@@ -50,7 +53,6 @@ def price_drop_check(alerts):
             # currency is wrong... handle this.
             pass
     notify('price_drop',price_drop_triggered_alerts)
-
 
 def notify(alert_type,alerts):
     for alert in alerts: # HERE DO A TRY EXCEPT! definitely.
@@ -99,9 +101,39 @@ def price_drop_notif(alert):
     print(x)
     return x
 
-def back_in_stock_notif(alert):
-    pass
+def back_in_stock_check(alerts):
+    back_in_stock_triggered_alerts = []
+    print('checking bis alerts:')
+    for alert in alerts:
+        print(alert)
+        url = alert.product.url
+        if stock_status(url):
+            alert.status = Alert_Status.objects.get(id=2)
+            alert.save()
+            back_in_stock_triggered_alerts.append(alert)
+    notify('back_in_stock',back_in_stock_triggered_alerts)
 
+def back_in_stock_notif(alert):
+    client = Courier(auth_token=AUTH_TOKEN)
+    print('sending back in stock notif')
+    resp = client.send_message(
+        message={
+            "to": {
+                "email":alert.user.email,
+            },
+            "template": "F73DGHK6MM4E9RPE7MSSNJAG9WGT",
+            "data": {
+                "firstName": alert.user.first_name,
+                "name": alert.product.name,
+                "color": alert.product.color,
+                "size": alert.product.size,
+                "url": alert.product.url
+            }
+        }
+    )
+    x = resp['requestId']
+    print(x)
+    return x
 
 def confirm_notif(notif_response_id):
     url = (f"https://api.courier.com/messages/{notif_response_id}")
@@ -118,7 +150,7 @@ def confirm_notif(notif_response_id):
 
 def run():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(alerts_check,'interval',minutes=30)
+    scheduler.add_job(alerts_check,'interval',minutes=1)
     print('program running')
     scheduler.start()
     

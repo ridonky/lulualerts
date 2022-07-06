@@ -39,13 +39,13 @@
                 <div class="row">
                     <div class="col-sm-auto" style="background:white; height:100vh;">
                         <div class="sidebar-menu">
-                            <div class="sidebar-menu-item-selected">
+                            <div class="sidebar-menu-item px-3 {% block menu_item_choose_product %}{% endblock menu_item_choose_product %}" id="menu-page-1">
                                 <img src="{% static '/lulu_alerts/find.svg' %}" class="sidebar-menu-icon">Choose product
                             </div>
-                            <div class="sidebar-menu-item">
+                            <div class="sidebar-menu-item px-3 {% block menu_item_confirm_details %}{% endblock menu_item_confirm_details %}" id="menu-page-2">
                                 <img src="{% static '/lulu_alerts/check.svg' %}" class="sidebar-menu-icon">Confirm details
                             </div>
-                            <div class="sidebar-menu-item">
+                            <div class="sidebar-menu-item px-3 {% block menu_item_alert_settings %}{% endblock menu_item_alert_settings %}"id="menu-page-3">
                                 <img src="{% static '/lulu_alerts/bell.svg' %}" class="sidebar-menu-icon">Alert settings
                             </div>
                         </div>
