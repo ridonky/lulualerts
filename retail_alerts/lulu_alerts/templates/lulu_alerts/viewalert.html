@@ -17,7 +17,11 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                         <!--https://stackoverflow.com/questions/4591525/is-it-possible-to-pass-query-parameters-via-djangos-url-template-tag --> 
-                    <li><a class="dropdown-item" href="#">Delete alert</a></li>
+                    <form method="POST" action="{% url 'lulu_alerts:viewalert' id=id  %}">
+                        <!-- <li><a class="dropdown-item" href="#">Delete alert</a></li> -->
+                        {% csrf_token %}
+                        <li><input type=submit class="dropdown-item" value="Delete alert"></li>
+                    </form>
                 </ul> 
             </div> 
         </div>

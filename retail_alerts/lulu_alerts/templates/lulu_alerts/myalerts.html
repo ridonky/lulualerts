@@ -3,56 +3,87 @@
 {% block nav_item_myalerts %} active {% endblock nav_item_myalerts %}
 
 {% block body %}
+<!-- <script>
+
+function showpage(page) {
+    let current_page = page
+}
+
+// wait to load the page
+document.addEventListener('DOMContentLoaded', function() {
+    // on page load, set current page = 1
+    let current_page = 1
+
+    // change page on click
+    document.querySelectorAll('.page-item').forEach(pageitem => {
+        pageitem.onclick = function() {
+            showpage(this.dataset.page)
+        }
+    } )
+
+})
+</script> -->
+
 <div class="container">
-<h1> My alerts </h1>
-<div class="btn-group d-md-flex justify-content-md-end" role="group" aria-label="Button group with nested dropdown">
-    <div class="btn-group" role="group">
-        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        New alert
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <!--https://stackoverflow.com/questions/4591525/is-it-possible-to-pass-query-parameters-via-djangos-url-template-tag --> 
-            <li><a class="dropdown-item" href="{% url 'lulu_alerts:newalertv2' alert_type='price_drop' %}">Price drop</a></li>
-            <li><a class="dropdown-item" href="{% url 'lulu_alerts:newalertv2' alert_type='back_in_stock' %}">Back in stock</a></li>
-        </ul>
+    <h1> My alerts </h1>
+    <div class="btn-group d-md-flex justify-content-md-end" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            New alert
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <!--https://stackoverflow.com/questions/4591525/is-it-possible-to-pass-query-parameters-via-djangos-url-template-tag --> 
+                <li><a class="dropdown-item" href="{% url 'lulu_alerts:newalertv2' alert_type='price_drop' %}">Price drop</a></li>
+                <li><a class="dropdown-item" href="{% url 'lulu_alerts:newalertv2' alert_type='back_in_stock' %}">Back in stock</a></li>
+            </ul>
+        </div>
     </div>
-</div>
-<div class="container my-3 bg-light rounded">
-<table class="table">
-{% if alerts|length > 0 %}
-<!-- can see the empty condition at 1:36 ish -->
-    <tr>
-        <th>Name</th>
-        <th>Alert type</th>
-        <th>Date set</th>
-        <th>Status</th>
-    </tr>
-    {% for alert in alerts %}
-    <tr>
-        <td><a href="{% url 'lulu_alerts:viewalert' id=alert.id %}" class="link">{{alert.product.name}}</a><br>{{alert.product.color}}, size {{alert.product.size}}</td>
-        {% if alert.alert_type == "price_drop" %}
-        <td>Price drop</td>
+    <div class="container my-3 bg-light rounded">
+        <table class="table">
+        {% if alerts|length > 0 %}
+        <!-- can see the empty condition at 1:36 ish -->
+            <tr>
+                <th>Name</th>
+                <th>Alert type</th>
+                <th>Date set</th>
+                <th>Status</th>
+            </tr>
+            {% for alert in alerts %}
+                    <tr>
+                        <td><a href="{% url 'lulu_alerts:viewalert' id=alert.id %}" class="link">{{alert.product.name}}</a><br>{{alert.product.color}}, size {{alert.product.size}}</td>
+                        {% if alert.alert_type == "price_drop" %}
+                        <td>Price drop</td>
+                        {% else %}
+                        <td>Back in stock</td>
+                        {% endif %}
+                        <td>{{alert.date_set}}</td>
+                        <td>{{alert.status.status}}</td>
+                    </tr>
+            {% endfor %}
         {% else %}
-        <td>Back in stock</td>
+            <tbody style="color: rgb(211, 211, 211);">
+            <tr>
+                <th> Alerts </th>
+            </tr>
+            <tr>
+                <td style="font-style:italic;">No alerts</td>
+            </tr>
+            </tbody>
+            {% endif %}
+        </table>
+    </div>
+    <nav aria-label="page nav">
+        <ul class="pagination justify-content-center">
+        {% if p.num_pages > 1 %}
+            <!-- <li class="page-item"><a class="page-link" href="#">Previous</a></li> -->
+            {% for page in p.page_range %}
+                <li class="page-item {% if page == alerts.number %}active{% endif %}" data-page={{page}}><a class="page-link" href="{% url 'lulu_alerts:myalerts' page=page %}">{{page}}</a></li>                
+            {% endfor %}
+            <!-- {% if alerts.has_next %}
+                <li class="page-item"><a class="page-link" href="#">Next</a></li> 
+            {% endif %} -->
         {% endif %}
-        <td>{{alert.date_set}}</td>
-        <td>{{alert.status.status}}</td>
-        <!--
-        <td> {{alert}} </td>
-        -->
-    </tr>
-    {% endfor %}
-    {% else %}
-    <tbody style="color: rgb(211, 211, 211);">
-    <tr>
-        <th> Alerts </th>
-    </tr>
-    <tr>
-        <td style="font-style:italic;">No alerts</td>
-    </tr>
-    </tbody>
-    {% endif %}
-</table>
-</div>
+        </ul>
+    </nav>
 </div>
 {% endblock %}

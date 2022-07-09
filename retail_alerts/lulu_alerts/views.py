@@ -1,3 +1,4 @@
+from pydoc import pager
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django import forms
@@ -5,8 +6,8 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.paginator import Paginator
 from datetime import date
-import json
 
 from scripts.scrape import get_product_details
 from django.contrib.auth.models import User
@@ -84,11 +85,6 @@ class CustomUserCreationForm(UserCreationForm):
 
     def save(self, commit=True): 
         user = super(CustomUserCreationForm, self).save(commit=False) # what??
-        # user.email = self.cleaned_data['email']
-        # user.first_name = self.cleaned_data['first_name']
-        # user.username = self.cleaned_data['username']
-        # user.password = self.cleaned_data['password1']
-        # user.is_staff=False
         if commit:
             user.save()
         print(user)
@@ -139,7 +135,6 @@ def signup(request):
                 })
         else:
             message = form.errors.as_text()
-            # message.append("Signup failed.")
             return render(request, "lulu_alerts/signup.html", {
                 "form":form,
                 "message":message
@@ -301,6 +296,11 @@ def newalert_confirmproduct(request): #alert_type,url,product
 
 @login_required(login_url='lulu_alerts:login')
 def view_alert(request,id):
+    if request.method == "POST":
+        a = Alerts.objects.get(id=id)
+        Products.objects.get(id=a.product.id).delete()
+        a.delete()
+        return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
     if user_alert_id_permission(request,id):
         alert = Alerts.objects.get(id=id)
         return render(request, "lulu_alerts/viewalert.html", 
@@ -310,13 +310,31 @@ def view_alert(request,id):
         return redirect("lulu_alerts:myalerts")
 
 
+# @login_required(login_url='lulu_alerts:login')
+# def myalerts(request):
+#     if 'alerts' not in request.GET or request.POST:
+#         u = User.objects.get(username=request.user)
+#         alerts = Alerts.objects.filter(user=u.id).order_by('-id')
+#     return render(request, "lulu_alerts/myalerts.html", {
+#         "alerts": alerts,
+#     })
+
+
+# TEST PAGE FOR PAGINATION
 @login_required(login_url='lulu_alerts:login')
-def myalerts(request):
-    if 'alerts' not in request.GET or request.POST:
-        u = User.objects.get(username=request.user)
-        alerts = Alerts.objects.filter(user=u.id).order_by('-id')
+def myalerts(request,page=1):
+    # pull user and alerts
+    u = User.objects.get(username=request.user)
+    alert_list = Alerts.objects.filter(user=u.id).order_by('-id')
+    print(u)
+    # 10 per page
+    p = Paginator(alert_list,3)
+    page_object = p.get_page(page)
+
+    
     return render(request, "lulu_alerts/myalerts.html", {
-        "alerts": alerts,
+        "alerts":page_object,
+        "p":p
     })
 
 run()
