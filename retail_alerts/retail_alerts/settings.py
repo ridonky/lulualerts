@@ -29,13 +29,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # # LOCAL
 # SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # REMOTE
-SECRET_KEY = os.environ(['SECRET_KEY'])
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # ADDED FOR SENDING EMAILS VIA COURIER
 # # LOCAL
 # AUTH_TOKEN = str(os.getenv('AUTH_TOKEN'))
 # REMOTE
-AUTH_TOKEN = os.environ(['AUTH_TOKEN'])
+AUTH_TOKEN = os.environ['AUTH_TOKEN']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -114,7 +114,7 @@ DATABASES = {
         # 'PASSWORD': str(os.getenv('POSTGRES_DB_PASSWORD')),
 
         # REMOTE
-        'PASSWORD' : os.environ(['POSTGRES_DB_PASSWORD']),
+        'PASSWORD' : os.environ['POSTGRES_DB_PASSWORD'],
 
         'HOST': 'ec2-18-214-35-70.compute-1.amazonaws.com',
         'PORT': '5432',
