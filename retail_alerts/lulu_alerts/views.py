@@ -1,4 +1,5 @@
 from pydoc import pager
+from click import pass_context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django import forms
@@ -217,9 +218,15 @@ def newalert(request, alert_type):
     })
 
 
-def lulu_url_check():
+def lulu_url_check(url):
     # check if its a lulu url
-    pass
+    if 'mirror.co' in str(url):
+        error = "lulualerts does not work for mirror products at this time"
+        return error
+    if 'lululemon' not in str(url):
+        error = "URL must be be a lululemon product link"
+        return error
+    return True
 
 @login_required(login_url='lulu_alerts:login')
 def newalertv2(request,alert_type):
@@ -227,24 +234,32 @@ def newalertv2(request,alert_type):
         product_form = ProductQueryForm(request.POST)
         if product_form.is_valid():
             url = product_form.cleaned_data['productquery']
-            product = get_product_details(url)
-            # product = json.dumps(product)
-            print("attempting to render next page")
-            request.session['product']=product # store it in the session instead of requiring args for now...
-            request.session['alert_type']=alert_type
-            request.session['url']=url
-            return HttpResponseRedirect(reverse("lulu_alerts:newalert_confirmproduct")) # kwargs={'alert_type':alert_type, 'url':'url', 'product':product}))
-            return render(request, "lulu_alerts/newalert_v2.html",{
-                "product_form": product_form,
-                "product":product,
+            if lulu_url_check(url) == True:
+                product = get_product_details(url)
+                # product = json.dumps(product)
+                print("attempting to render next page")
+                request.session['product']=product # store it in the session instead of requiring args for now...
+                request.session['alert_type']=alert_type
+                request.session['url']=url
+                return HttpResponseRedirect(reverse("lulu_alerts:newalert_confirmproduct")) # kwargs={'alert_type':alert_type, 'url':'url', 'product':product}))
+                return render(request, "lulu_alerts/newalert_v2.html",{
+                    "product_form": product_form,
+                    "product":product,
+                    "alert_type":alert_type,
+                    "url":url
+                })
+            else:
+                error = lulu_url_check(url)
+                return render(request,"lulu_alerts/newalert_v2.html",{
+                "product_form":product_form,
                 "alert_type":alert_type,
-                "url":url
+                "error":error
             })
-        else: #form is not valid, give them whats there.
+        else: #form is not valid, give them whats there. - it may not have been a lulu URL!
             print("fucking invalid form")
             return render(request,"lulu_alerts/newalert_v2.html",{
                 "product_form":product_form,
-                "alert_type":alert_type
+                "alert_type":alert_type,
             })
     print("treating it like a get req")
     return render(request, "lulu_alerts/newalert_v2.html", {
@@ -328,7 +343,7 @@ def myalerts(request,page=1):
     alert_list = Alerts.objects.filter(user=u.id).order_by('-id')
     print(u)
     # 10 per page
-    p = Paginator(alert_list,3)
+    p = Paginator(alert_list,10)
     page_object = p.get_page(page)
 
     

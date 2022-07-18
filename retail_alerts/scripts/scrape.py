@@ -15,10 +15,6 @@ django.setup()
 #/ end testing
 
 from bs4 import BeautifulSoup
-from django.contrib.auth.models import User
-from lulu_alerts.models import Products, Alerts, Alert_Status, Notifications, Notif_Status, Notif_Origin
-from time import sleep
-from datetime import datetime
 import requests
 
 #1 color and size out of stock, regular page:
@@ -43,16 +39,20 @@ def get_product_details(quote_page):
     soup = BeautifulSoup(r.text, 'html.parser')
     d = {}
     product_name_box = soup.find('div',attrs={'itemprop':'name'})
-    product_name = product_name_box.text.strip()
-    d['name'] = product_name
-    d['color'] = get_color(quote_page)
-    d['size'] = get_size(quote_page)
-    price_currency = price(quote_page)
-    d['in_stock'] = stock_status(quote_page)
-    d['price'] = price_currency['price']
-    d['currency'] = price_currency['currency']
-    d['url'] = quote_page
-    return d
+    try:
+        product_name = product_name_box.text.strip()
+        d['name'] = product_name
+        d['color'] = get_color(quote_page)
+        d['size'] = get_size(quote_page)
+        price_currency = price(quote_page)
+        d['in_stock'] = stock_status(quote_page)
+        d['price'] = price_currency['price']
+        d['currency'] = price_currency['currency']
+        d['url'] = quote_page
+        return d
+    except AttributeError:
+        return d
+
 
 def get_color(quote_page):
     r = requests.get(quote_page)
@@ -111,3 +111,15 @@ def price(quote_page):
     except:
         Exception
         return price_currency
+
+def photo(quote_page):
+    r=requests.get(quote_page)
+    soup = BeautifulSoup(r.text,'html.parser')
+    photo = soup.find('img',attrs={'data-testid':'not-lazy-image'})
+    links = photo['srcset']
+    image = ''
+    for l in links:
+        if l == ' ':
+            break
+        image=image+(l)
+    return image
