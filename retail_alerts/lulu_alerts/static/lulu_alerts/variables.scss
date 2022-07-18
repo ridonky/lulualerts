@@ -1,17 +1,84 @@
 // to apply changes, run sass variables.scss:variables.css -- have to be IN static/lulu_alerts
 
 // custom theme colors
-$c-orange: rgb(255,199,115);
-$c-l-purple: rgb(254,212,252);
-$c-yellow: rgb(255,212,82);
-$c-d-purple: rgb(148,110,220);
+// $c-orange: rgb(255,199,115);
+// $c-l-purple: rgb(254,212,252);
+// $c-yellow: rgb(255,212,82);
+// $c-d-purple: rgb(148,110,220);
 $c-blue: rgb(111,150,255);
-$c-hot-pink: rgb(238,50,189);
-$c-lp-1: rgb(255,249,232);
-$c-blue-cadet: #3B3561;
+// $c-hot-pink: rgb(238,50,189);
+// $c-lp-1: rgb(255,249,232);
+// $c-blue-cadet: #3B3561;
+
+
+// NEW THEME - to ignore
+// // new custom theme colors
+// $logo-orange: #FF6663FF;
+// $background-blue: #BFD7EA;
+
+// // for pressed buttons
+// $p-blue: #7DADD5;
+// $p-blue-text:#29587E;
+
+// // for hover solid buttons:
+// $h-blue:#9DC2DFFF;
+// $h-blue-text:#29587EFF;
+
+
+// // for disabled buttons
+// $d-blue:#A4BECD;
+// $d-blue-text:#E5E5E5;
+// $d-orange:#b57c7c;
+// $d-orange-text:#584f4f;
+
+// // for dark text and button fill
+// $primary-blue: #0B3954;
+// $lime-green:#D6FF1F;
+// $text-on-lime-green:#576B00;
+// $lime-green-border:#e9ff89;
+
+
+// New Colors V2
+  $dope-purple-lt: #D5C9E7;
+  $dope-purple-0:#A074FE;
+  $dope-purple-1:#834AFF;
+  $dope-purple: #661FFF; // primary
+  $dope-purple-2:#5709FF;
+  $dope-purple-3:#4101CB;
+  $outline-grey: #C2C2C2;
+  $grey-0: #CCCCCC;
+  $grey-1: #909090;
+  // $dope-purple-3-rgb: rgb(87, 9, 255);
+
+
+// Primary Button - Enabled state
+  $btn-background-variable-primary-enabled: #{$dope-purple};
+  $btn-color-variable-primary-enabled:white;
+// Primary Button - Disabled state
+  $btn-background-variable-primary-disabled: #{$grey-0};
+  $btn-color-variable-primary-disabled: #{$grey-1};
+  $btn-border-color-variable-primary-disabled:#{$grey-0};
+// Primary Button - Hover,Active, Focus state
+  $btn-background-variable-primary-hover: #{$dope-purple-1};
+  $btn-color-variable-primary-hover:white;
+
+
+// Outlined Button - Enabled state
+  $btn-background-variable-outlined-enabled: white;
+  $btn-border-color-variable-outlined-enabled: #{$dope-purple-0};
+  $btn-color-variable-outlined-enabled: #{$dope-purple};
+// Outlined Button - Disabled state
+  $btn-background-variable-outlined-disabled:white;
+  $btn-border-color-variable-outlined-disabled: #{$outline-grey};
+  $btn-color-variable-outlined-disabled: #{$outline-grey};
+// Outlined Button - Hover, Active, Focus states
+  $btn-background-variable-outlined-hover: #{$dope-purple-lt};
+  $btn-border-color-variable-outlined-hover: #{dope-purple-3};
+  $btn-color-variable-outlined-hover: #{$dope-purple};
+
+
 
 // buttons
-
 %def-button {
   --bs-btn-font-weight: 600;  
   --bs-btn-border-radius: .5rem;
@@ -22,41 +89,93 @@ $c-blue-cadet: #3B3561;
 
 .btn-primary {
     @extend %def-button;
-    --bs-btn-font-weight: 600;  
-    --bs-btn-border-radius: .5rem;
-    background: $c-d-purple;
-    --bs-btn-border-color: var(--background);
-    --bs-btn-hover-bg:rgb(238,50,189);
-    --bs-btn-hover-color: black;
-    --bs-btn-active-bg:rgb(238,50,189);
-    --bs-btn-active-border-color:rgb(254,212,252);
-    --bs-btn-active-color: white;
+    --bs-btn-bg: #{$btn-background-variable-primary-enabled};
+    --bs-btn-border-color: var(--bs-btn-bg);
+    --bs-btn-color:#{$btn-color-variable-primary-enabled};
+
+    --bs-btn-hover-bg: #{$btn-background-variable-primary-hover};
+    --bs-btn-hover-color: #{$btn-color-variable-primary-hover};
+    --bs-btn-hover-border-color: var(--bs-btn-hover-bg);
+
+    --bs-btn-active-bg: var(--bs-btn-hover-bg);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-border-color:var(--bs-btn-active-bg);
+
+    --bs-btn-focus-bg:var(--bs-btn-hover-bg);
+    --bs-btn-focus-color:var(--bs-btn-hover-color);
+    --bs-btn-focus-shadow-rgb: 87, 9, 255;
+    --bs-btn-focus-border-color:var(--bs-btn-focus-shadow-rgb);
+
+    --bs-btn-disabled-bg: #{$btn-background-variable-primary-disabled};
+    --bs-btn-disabled-color: #{$btn-color-variable-primary-disabled};
+    --bs-btn-disabled-border-color: #{$btn-border-color-variable-primary-disabled};
   }
 
 .btn-outline-primary{
   @extend %def-button;
-  --bs-btn-font-weight: 600;
-  --bs-btn-border-radius: .5rem;
-  --bs-btn-bg: white;
-  //background: linear-gradient(to right,rgb(238,50,189),rgb(254,212,252)); :( WHY DOESNT IT WORK
-  --bs-btn-border-color: rgb(148,110,220);
-  --bs-btn-color:rgb(148,110,220);
-  --bs-btn-hover-bg:rgb(254,212,252);
-  --bs-btn-hover-color: rgb(238,50,189);
+  --bs-btn-bg: #{$btn-background-variable-outlined-enabled};
+  --bs-btn-border-color: #{$btn-border-color-variable-outlined-enabled};
+  --bs-btn-color:#{$btn-color-variable-outlined-enabled};
+
+  --bs-btn-hover-bg:#{$btn-background-variable-outlined-hover};
+  --bs-btn-hover-color:#{$btn-color-variable-outlined-hover};
+  --bs-btn-hover-border-color:#{$btn-border-color-variable-outlined-hover};
+
+  --bs-btn-focus-bg:var(--bs-btn-hover-bg);
+  --bs-btn-focus-color:var(--bs-btn-hover-color);
+  --bs-btn-focus-shadow-rgb: 87, 9, 255;
+  --bs-btn-focus-border-color:var(--bs-btn-focus-shadow-rgb);
+
+  --bs-btn-active-bg:var(--bs-btn-hover-bg);
+  --bs-btn-active-color:var(--bs-btn-hover-color);
+  --bs-btn-active-border-color:var(--bs-btn-focus-shadow-rgb);
+
+  //todo: make the disabled button!
+
 }
 
+// .btn-secondary{
+//   @extend %def-button;
+//   --bs-btn-bg:#{$primary-blue};
+//   --bs-btn-color:white;
+//   --bs-btn-hover-bg:#{$h-blue};
+//   --bs-btn-hover-color:#{$h-blue-text};
+//   --bs-btn-active-bg:#{$p-blue};
+//   --bs-btn-active-color:#{$p-blue-text};
+//   --bs-btn-disabled-bg:#{$d-blue};
+//   --bs-btn-disabled-color:white;
+//   --bs-btn-disabled-border-color: var(--bs-btn-disabled-bg);
+// }
+
+// END IGNORE
+
+
+// pagination
+.pagination{
+  --bs-pagination-color: #{$dope-purple-2};
+  --bs-pagination-bg: white;
+  --bs-pagination-active-color: white;
+  --bs-pagination-active-bg: #{$dope-purple-2};
+  // --bs-pagination-focus-color: black;
+  --bs-pagination-hover-color:#{$dope-purple};
+  --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(87, 9, 255, 0.25);
+  font-weight:100;
+  --bs-pagination-active-border-color:#{$dope-purple-2};
+  --bs-pagination-focus-color:#{$dope-purple-1};
+}
 
 .navbar {
   padding-left: 10px;
-  border: $c-hot-pink;
   background: white;
-  //background: rgba(254,212,252, 0.5);
 }
 
 .navbar-brand{
-  color:$c-hot-pink;
+  color:#{$dope-purple};
 }
 
+.navbar-brand:hover, .navbar-brand:active{
+  color:#{$dope-purple-1};
+}
 
 .carousel-control-prev, .carousel-control-next {
   display: block;
@@ -72,16 +191,17 @@ $c-blue-cadet: #3B3561;
   background-color: rgb(235, 235, 235,.6);
 }
 
-.link{
-  color: $c-blue;
+.link, a{
+  color: #{$dope-purple-1};
   font-weight: bold;
   text-decoration: none;
 }
 
-.link:hover{
-  color: $c-hot-pink;
+.link:hover, a:hover{
+  color: #{$dope-purple-0};
   text-decoration:none;
 }
+
 
 .sidebar-menu {
   font-family: (var(--bs-body-font-family));
@@ -112,8 +232,8 @@ $c-blue-cadet: #3B3561;
 .sidebar-menu-item-selected {
   @extend .sidebar-menu-item;
   font-weight: bold;
-  color: #007483FF;
-  background: #C8F9FFFF;
+  // color: #{$primary-blue};
+  // background: #{$background-blue};
   position: relative;
 }
 
@@ -125,7 +245,7 @@ $c-blue-cadet: #3B3561;
 }
 
 
-/* for the page */
+/* for the new alert page */
 .new-alert-page-background {
   background: #F9F9FAFF;
   font-family:var(--bs-body-font-family);
@@ -141,15 +261,17 @@ $c-blue-cadet: #3B3561;
   border-color: #DEE1E6FF;
   border-style: dashed;
   justify-content: center;
+  align-items:center;
   display: flex;
 }
 
 .new-alert-modal {
-  display: flex;
+  // display: block;
   background:white;
   border-radius: 6px;
   box-shadow: 0px 4px 9px #DEE1E6FF, 0px 0px 2px #DEE1E6FF;
   color:#171A1FFF;
+  vertical-align: middle;
 }
 
 .product-details-page {
@@ -157,11 +279,26 @@ $c-blue-cadet: #3B3561;
 }
 
 .product-details-rectangle {
-  // width: 1122px;
   background: white;
   border-style:solid;
-  // border-radius: 4px 4px 0px 0px;
   border-color: #DEE1E6FF;
   display: flex;
   border-width: 1px;
+}
+
+.dropdown-item:active {
+  background-color:#{$dope-purple-0};
+}
+
+.badge {
+  background:#{$dope-purple-0};
+  color:white;
+  font-size:small;
+  text-align: right;
+}
+
+.alert-warning, .alert-primary {
+  --bs-alert-bg: #{$dope-purple-lt};
+  --bs-alert-border-color: #{$dope-purple-3};
+  --bs-alert-color: #{$dope-purple};
 }
