@@ -13,10 +13,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 import django_heroku
+
+# # FOR LOCAL
 # from dotenv import load_dotenv
 
 # # load env vars
 # load_dotenv()
+# # END FOR LOCAL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -96,30 +99,28 @@ WSGI_APPLICATION = 'retail_alerts.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# # OLD FOR LOCAL
+# # START LOCAL
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-# NEW FOR POSTGRES
+# # END LOCAL
 
+# START REMOTE
 DATABASES = {
     'default' : {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'd17udcmv0dhs12',
         'USER': 'yafbiyjfcnjyjt',
-        # # LOCAL
-        # 'PASSWORD': str(os.getenv('POSTGRES_DB_PASSWORD')),
-
         # REMOTE
         'PASSWORD' : os.environ['POSTGRES_DB_PASSWORD'],
-
         'HOST': 'ec2-18-214-35-70.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
+# END FOR REMOTE
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
