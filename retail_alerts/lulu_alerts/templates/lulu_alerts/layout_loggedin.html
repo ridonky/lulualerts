@@ -15,10 +15,10 @@
         <link rel="shortcut icon" type="image/png" href="{% static 'lulu_alerts/img/favicon.ico' %}"/>
     </head>
     <body>
-            <nav class="navbar navbar-expand-md"> <!-- old: style="background-color: rgb(255,199,115);-->
+            <nav class="navbar navbar-expand-md">
             <!-- Navbar content -->
                 <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'lulu_alerts:myalerts' %}"><b>lulu alerts</b></a> <!-- old style tag: style="color:rgb(238,50,189);-->
+                <a class="navbar-brand" href="{% url 'lulu_alerts:myalerts' %}"><b>lulu alerts</b></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
@@ -36,5 +36,8 @@
             </nav>
         {% block body %}
         {% endblock %}
+    <nav class="navbar fixed-bottom">
+        <a class="navbar-item" href="#">Contact us</a>
+    </nav>
     </body>
 </html>

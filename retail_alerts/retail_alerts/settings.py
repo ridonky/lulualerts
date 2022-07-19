@@ -47,10 +47,12 @@ DEBUG = True
 # ALLOWED_HOSTS = []
 # # end old before heroku
 
-# new for heroku
-ALLOWED_HOSTS = ['https://lulualerts.herokuapp.com/']
-# end new for heroku
+# # new for heroku
+# ALLOWED_HOSTS = ['https://lulualerts.herokuapp.com/']
+# # end new for heroku
 
+# Allows all hosts
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
