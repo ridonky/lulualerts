@@ -1,14 +1,16 @@
 # Set up with django app settings
 import os
 import django
+
+# can i make this setup conditional? IE: look for what the django settings module is then use it to import AUTH TOKEN
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'retail_alerts.settings')
 from retail_alerts.settings import AUTH_TOKEN
+# I DO NOT KNOW
+
 django.setup()
 
 # Modules for django models, scraping, and sending notifs
 from trycourier import Courier
-from django.contrib.auth.models import User
-from urllib.parse import urlparse, urlunsplit
 from lulu_alerts.models import Products, Alerts, Alert_Status, Notifications, Notif_Status, Notif_Origin
 from time import sleep
 from datetime import datetime

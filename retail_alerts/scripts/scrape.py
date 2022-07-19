@@ -4,15 +4,15 @@
     # 'python manage.py shell < application.py' 
 # from /retail_alerts, and it runs without the following 4 lines.
 
-# start testing
-import os
-import django
+# # start testing
+# import os
+# import django
 
-from retail_alerts.settings import AUTH_TOKEN
+# from retail_alerts.settings import AUTH_TOKEN
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'retail_alerts.settings')
-django.setup()
-#/ end testing
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'retail_alerts.settings')
+# django.setup()
+# #/ end testing
 
 from bs4 import BeautifulSoup
 import requests
