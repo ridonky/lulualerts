@@ -73,7 +73,11 @@
                         </table>
                     </div>
                     <div class="col-4 bg-light">
-                        image goes here
+                        {% if photo != None %}
+                        <img src={{photo}} alt="lululemon product" class="img-fluid">
+                        {% else %}
+                        <img src="{% static 'lulu_alerts/lululogo.png' %}" alt="lululemon product" class="img-fluid">
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -16,6 +16,7 @@
 
 from bs4 import BeautifulSoup
 import requests
+import validators
 
 #1 color and size out of stock, regular page:
 # quote_page = 'https://shop.lululemon.com/p/jackets-and-hoodies-jackets/Define-Jacket?color=1966&sz=4'
@@ -112,14 +113,29 @@ def price(quote_page):
         Exception
         return price_currency
 
-def photo(quote_page):
+def get_photo(quote_page):
     r=requests.get(quote_page)
     soup = BeautifulSoup(r.text,'html.parser')
-    photo = soup.find('img',attrs={'data-testid':'not-lazy-image'})
-    links = photo['srcset']
-    image = ''
-    for l in links:
-        if l == ' ':
-            break
-        image=image+(l)
+    # image = ''
+    try: 
+        image = ''
+        images = soup.picture.img['srcset']
+        for i in images:
+            if i == ' ':
+                break
+            image = image + i
+    except:
+        None
+        try:
+            photo = soup.find_all('img',attrs={'data-testid':'not-lazy-image'})
+            links = photo['srcset']
+            for l in links:
+                if l == ' ':
+                    break
+                image=image+(l)
+        except:
+            None
+            return None
+    if not validators.url(image):
+        return None
     return image
