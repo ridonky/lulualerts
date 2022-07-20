@@ -1,14 +1,16 @@
 # Set up with django app settings
 import os
 import django
+
+# can i make this setup conditional? IE: look for what the django settings module is then use it to import AUTH TOKEN
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'retail_alerts.settings')
 from retail_alerts.settings import AUTH_TOKEN
+# I DO NOT KNOW
+
 django.setup()
 
 # Modules for django models, scraping, and sending notifs
 from trycourier import Courier
-from django.contrib.auth.models import User
-from urllib.parse import urlparse, urlunsplit
 from lulu_alerts.models import Products, Alerts, Alert_Status, Notifications, Notif_Status, Notif_Origin
 from time import sleep
 from datetime import datetime
@@ -25,7 +27,6 @@ def alerts_check():
     active = Alerts.objects.filter(status=1) 
     price_drop_alerts = active.filter(alert_type = "price_drop")
     back_in_stock_alerts = active.filter(alert_type = "back_in_stock")
-    print(f'bis alerts include {back_in_stock_alerts}')
     price_drop_check(price_drop_alerts)
     back_in_stock_check(back_in_stock_alerts)
     #continue writing this for back in stock alerts
@@ -150,7 +151,7 @@ def confirm_notif(notif_response_id):
 
 def run():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(alerts_check,'interval',minutes=1)
+    scheduler.add_job(alerts_check,'interval',minutes=30)
     print('program running')
     scheduler.start()
     

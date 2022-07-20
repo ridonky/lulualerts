@@ -12,13 +12,13 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
         <script src="{% static 'lulu_alerts/newalert.js' %}"></script>
         <link rel="stylesheet" href="{% static 'lulu_alerts/variables.css' %}">
-        <link rel="shortcut icon" type="image/png" href="{% static 'lulu_alerts/img/favicon.ico' %}"/>
+        <link rel="shortcut icon" type="image/png" href="{% static 'lulu_alerts/favicon.ico' %}"/>
     </head>
     <body>
-            <nav class="navbar navbar-expand-md"> <!-- old: style="background-color: rgb(255,199,115);-->
+            <nav class="navbar navbar-expand-md">
             <!-- Navbar content -->
                 <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'lulu_alerts:myalerts' %}"><b>lulu alerts</b></a> <!-- old style tag: style="color:rgb(238,50,189);-->
+                <a class="navbar-brand" href="{% url 'lulu_alerts:myalerts' %}"><b>lulu alerts</b></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
@@ -36,5 +36,14 @@
             </nav>
         {% block body %}
         {% endblock %}
+    <nav class="navbar fixed-bottom">
+        <container>
+            <ul class="navbar navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="mailto:hello.lulualerts@gmail.com">Have a question or need help? Email us!</a>
+                </li>
+            </ul>
+        </container>
+    </nav>
     </body>
 </html>

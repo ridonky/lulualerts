@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect
 from django import forms
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from datetime import date
-import json
 
 from scripts.scrape import get_product_details
 from django.contrib.auth.models import User
@@ -56,7 +56,6 @@ class CustomUserCreationForm(UserCreationForm):
         (cad_currency, 'CAD')
     ]
 
-    
     country = forms.ChoiceField(label='Choose currency',
         choices = choices,
         required=True,
@@ -64,32 +63,12 @@ class CustomUserCreationForm(UserCreationForm):
         widget=forms.Select(attrs={'class':'form-select'}),
     )
 
-    default_price = "Whenever price drops below current price"
-    custom_price = "Select my OWN DAMN price"
-    # https://stackoverflow.com/questions/38473957/how-to-add-text-box-next-to-a-radio-button
-    
-    custom_price_input = forms.CharField(
-        widget = forms.TextInput(attrs={'class':'form-control'}),
-        label=''
-    )
-
-    price_choices = [ 
-        (default_price, "Whenever price drops below current price"), 
-        (custom_price, "Select my own price"),
-    ]
-
-    select_price = forms.ChoiceField(label="Select price",
-        choices = price_choices,
-        required=True,
-        widget=forms.RadioSelect(attrs={'class':'form-check'})
-    )
-
     class Meta:
         model = User
-        fields = ("first_name", "email", "username", "country", "password1", "password2","select_price","custom_price_input")
+        fields = ("first_name", "email", "username", "country", "password1", "password2")
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', "autofocus":"autofocus"}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
 
@@ -105,13 +84,9 @@ class CustomUserCreationForm(UserCreationForm):
 
     def save(self, commit=True): 
         user = super(CustomUserCreationForm, self).save(commit=False) # what??
-        user.email = self.cleaned_data['email']
-        user.first_name = self.cleaned_data['first_name']
-        user.username = self.cleaned_data['username']
-        user.password = self.cleaned_data['password1']
-        user.is_staff=False
         if commit:
             user.save()
+        print(user)
         return user
 
 
@@ -128,6 +103,7 @@ def login_view(request):
         username = request.POST["username"]
         password = request.POST ["password"]
         user = authenticate(request, username=username, password=password)
+        print(user)
         if user is not None:
             login(request,user)
             return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
@@ -137,7 +113,6 @@ def login_view(request):
 # logged in views
 def signup(request):
     if request.method == "POST":
-        message=[]
         form=CustomUserCreationForm(request.POST)
         if form.is_valid():
             print('formisvalid')
@@ -152,13 +127,13 @@ def signup(request):
                 login(request,user)
                 return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
             elif not form.check_password_match():
-                message.append("Passwords must match.")
+                message=("Passwords must match.")
                 return render(request,"lulu_alerts/signup.html", {
                     "form":form,
                     "message":message
                 })
         else:
-            message.append("Signup failed.")
+            message = form.errors.as_text()
             return render(request, "lulu_alerts/signup.html", {
                 "form":form,
                 "message":message
@@ -241,9 +216,15 @@ def newalert(request, alert_type):
     })
 
 
-def lulu_url_check():
+def lulu_url_check(url):
     # check if its a lulu url
-    pass
+    if 'mirror.co' in str(url):
+        error = "lulualerts does not work for mirror products at this time"
+        return error
+    if 'lululemon' not in str(url):
+        error = "URL must be be a lululemon product link"
+        return error
+    return True
 
 @login_required(login_url='lulu_alerts:login')
 def newalertv2(request,alert_type):
@@ -251,24 +232,32 @@ def newalertv2(request,alert_type):
         product_form = ProductQueryForm(request.POST)
         if product_form.is_valid():
             url = product_form.cleaned_data['productquery']
-            product = get_product_details(url)
-            # product = json.dumps(product)
-            print("attempting to render next page")
-            request.session['product']=product # store it in the session instead of requiring args for now...
-            request.session['alert_type']=alert_type
-            request.session['url']=url
-            return HttpResponseRedirect(reverse("lulu_alerts:newalert_confirmproduct")) # kwargs={'alert_type':alert_type, 'url':'url', 'product':product}))
-            return render(request, "lulu_alerts/newalert_v2.html",{
-                "product_form": product_form,
-                "product":product,
+            if lulu_url_check(url) == True:
+                product = get_product_details(url)
+                # product = json.dumps(product)
+                print("attempting to render next page")
+                request.session['product']=product # store it in the session instead of requiring args for now...
+                request.session['alert_type']=alert_type
+                request.session['url']=url
+                return HttpResponseRedirect(reverse("lulu_alerts:newalert_confirmproduct")) # kwargs={'alert_type':alert_type, 'url':'url', 'product':product}))
+                return render(request, "lulu_alerts/newalert_v2.html",{
+                    "product_form": product_form,
+                    "product":product,
+                    "alert_type":alert_type,
+                    "url":url
+                })
+            else:
+                error = lulu_url_check(url)
+                return render(request,"lulu_alerts/newalert_v2.html",{
+                "product_form":product_form,
                 "alert_type":alert_type,
-                "url":url
+                "error":error
             })
-        else: #form is not valid, give them whats there.
+        else: #form is not valid, give them whats there. - it may not have been a lulu URL!
             print("fucking invalid form")
             return render(request,"lulu_alerts/newalert_v2.html",{
                 "product_form":product_form,
-                "alert_type":alert_type
+                "alert_type":alert_type,
             })
     print("treating it like a get req")
     return render(request, "lulu_alerts/newalert_v2.html", {
@@ -320,6 +309,11 @@ def newalert_confirmproduct(request): #alert_type,url,product
 
 @login_required(login_url='lulu_alerts:login')
 def view_alert(request,id):
+    if request.method == "POST":
+        a = Alerts.objects.get(id=id)
+        Products.objects.get(id=a.product.id).delete()
+        a.delete()
+        return HttpResponseRedirect(reverse("lulu_alerts:myalerts"))
     if user_alert_id_permission(request,id):
         alert = Alerts.objects.get(id=id)
         return render(request, "lulu_alerts/viewalert.html", 
@@ -329,13 +323,31 @@ def view_alert(request,id):
         return redirect("lulu_alerts:myalerts")
 
 
+# @login_required(login_url='lulu_alerts:login')
+# def myalerts(request):
+#     if 'alerts' not in request.GET or request.POST:
+#         u = User.objects.get(username=request.user)
+#         alerts = Alerts.objects.filter(user=u.id).order_by('-id')
+#     return render(request, "lulu_alerts/myalerts.html", {
+#         "alerts": alerts,
+#     })
+
+
+# TEST PAGE FOR PAGINATION
 @login_required(login_url='lulu_alerts:login')
-def myalerts(request):
-    if 'alerts' not in request.GET or request.POST:
-        u = User.objects.get(username=request.user)
-        alerts = Alerts.objects.filter(user=u.id).order_by('-id')
+def myalerts(request,page=1):
+    # pull user and alerts
+    u = User.objects.get(username=request.user)
+    alert_list = Alerts.objects.filter(user=u.id).order_by('-id')
+    print(u)
+    # 10 per page
+    p = Paginator(alert_list,10)
+    page_object = p.get_page(page)
+
+    
     return render(request, "lulu_alerts/myalerts.html", {
-        "alerts": alerts,
+        "alerts":page_object,
+        "p":p
     })
 
 run()

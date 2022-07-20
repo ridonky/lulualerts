@@ -17,9 +17,10 @@ urlpatterns = [
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("signup", views.signup, name="signup"),
-    path("favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("img/favicon.ico"))),
-    path("myalerts", views.myalerts,name="myalerts"),
-    path("myalerts/<str:id>", views.view_alert, name="viewalert"),
+    path("favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("lulu_alerts/favicon.ico"))),
+    path("myalerts/",views.myalerts,name="myalerts"),
+    path("myalerts/<int:page>/",views.myalerts,name="myalerts"),
+    path("myalerts/alert/<str:id>", views.view_alert, name="viewalert"),
     # path("new_alert=<alert_type>", views.newalert, name="newalert"), # OLD NEW ALERT!!!
     path("newalert=<alert_type>",views.newalertv2, name="newalertv2"),
     path("newalert/confirm_product",views.newalert_confirmproduct,name="newalert_confirmproduct"),
