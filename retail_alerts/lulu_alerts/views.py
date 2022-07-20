@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import date
 
-from scripts.scrape import get_product_details
+from scripts.scrape import get_product_details, get_photo
 from django.contrib.auth.models import User
 from lulu_alerts.models import Products, Alerts, Alert_Status
 from scripts.alertscheck import run
@@ -234,7 +234,6 @@ def newalertv2(request,alert_type):
             url = product_form.cleaned_data['productquery']
             if lulu_url_check(url) == True:
                 product = get_product_details(url)
-                # product = json.dumps(product)
                 print("attempting to render next page")
                 request.session['product']=product # store it in the session instead of requiring args for now...
                 request.session['alert_type']=alert_type
@@ -271,6 +270,8 @@ def newalert_confirmproduct(request): #alert_type,url,product
     product = request.session['product']
     url = request.session['url']
     alert_type = request.session['alert_type']
+    photo = get_photo(url)
+    print(photo)
     if request.method == "POST":
         # for a price drop alert with a target price:
         price=request.POST["price"]
@@ -299,12 +300,13 @@ def newalert_confirmproduct(request): #alert_type,url,product
             "new_alert_message":new_alert_message,
             # dont think we need alert type???
             "alert_type": alert_type, 
-            "alerts": alerts
+            "alerts": alerts,
         })
     return render(request,"lulu_alerts/newalert_confirmproduct.html", {
         "product":product,
         "url":url,
         "alert_type":alert_type,
+        "photo": photo
     })
 
 @login_required(login_url='lulu_alerts:login')
