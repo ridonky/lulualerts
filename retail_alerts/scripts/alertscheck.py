@@ -27,7 +27,6 @@ def alerts_check():
     active = Alerts.objects.filter(status=1) 
     price_drop_alerts = active.filter(alert_type = "price_drop")
     back_in_stock_alerts = active.filter(alert_type = "back_in_stock")
-    print(f'bis alerts include {back_in_stock_alerts}')
     price_drop_check(price_drop_alerts)
     back_in_stock_check(back_in_stock_alerts)
     #continue writing this for back in stock alerts

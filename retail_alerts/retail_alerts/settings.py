@@ -173,6 +173,12 @@ STATIC_URL = "/static/"
 django_heroku.settings(locals())
 # END NEW FOR HEROKU
 
+# TEST FAVICO FIX
+STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'),]
+
+# END TEST FAVICO FIX
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
