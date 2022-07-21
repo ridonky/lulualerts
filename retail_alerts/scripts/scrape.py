@@ -33,6 +33,8 @@ import validators
 #5 ccolor and lenght selected but no size selected, regular page
 # quote_page = 'https://shop.lululemon.com/p/women-crops/Wunder-Train-HR-Crop-21/_/prod9750624?color=26083'
 
+# troubleshooting
+quote_page = 'https://shop.lululemon.com/p/women-pants/Align-Pant-2-MD/_/prod8360162?color=51039&sz=4'
 
 # Get all product details
 def get_product_details(quote_page):
@@ -50,8 +52,10 @@ def get_product_details(quote_page):
         d['price'] = price_currency['price']
         d['currency'] = price_currency['currency']
         d['url'] = quote_page
+        print(d)
         return d
     except AttributeError:
+        print(d)
         return d
 
 
