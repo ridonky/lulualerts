@@ -77,8 +77,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://lulualerts.com',
     'http://www.lulualerts.com',
-    'https://lulualerts.herokuapp.com/',
-    'http://lulualerts.herokuapp.com/',
+    'https://lulualerts.herokuapp.com',
+    'http://lulualerts.herokuapp.com',
 ]
 
 
