@@ -90,8 +90,8 @@ class CustomUserCreationForm(UserCreationForm):
         return user
 
 
-def index(request):
-    return render(request, "lulu_alerts/index.html")
+def index2(request):
+    return render(request, "lulu_alerts/index2.html")
 
 def products(request):
     return render(request, "lulu_alerts/products.html")
