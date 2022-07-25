@@ -4,7 +4,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
 
 app_name="lulu_alerts"
-# so we can reference specific index page for lulu_alerts app
+# so we can reference specific pages for lulu_alerts app
 
 urlpatterns = [
 
@@ -12,7 +12,7 @@ urlpatterns = [
     # 1. what is the path/ route
     # 2. what do you want to render - from functions defined at views - at that path
     # 3. optinoally, represent the url pattern with a string name, to referencew)
-    path("", views.index, name="index"),
+    path("", views.index2, name="index2"),
     path("products", views.products, name="products"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
