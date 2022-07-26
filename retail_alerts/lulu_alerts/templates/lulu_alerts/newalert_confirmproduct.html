@@ -1,4 +1,4 @@
-{% extends  "lulu_alerts/layout_newalert.html" %}
+{% extends  "lulu_alerts/layout_m_newalert.html" %}
 {% load static %}
 {% block nav_item_myalerts %} active {% endblock nav_item_myalerts %}
 {% block menu_item_confirm_details %} sidebar-menu-item-selected {% endblock menu_item_confirm_details %}
@@ -14,14 +14,19 @@
             back in stock
             {% endif %}
             alert</h1>
-        <div class="product-details-rectangle py-3 px-2 mb-3 rounded">
+        <div class="product-details-rectangle py-3 mb-3 rounded">
             <div class="container align-self-center">
+                <div class="row">
+                    <div style="font-weight:bold; margin-left:1%;" class="pb-3">
+                        CONFIRM PRODUCT DETAILS
+                    </div>
+                </div>
                 <div class="row">
                     <div class=col>
                         <table class="table">
-                            <div style="font-weight:bold; margin-left:1%;" class="pb-3">
+                            <!-- <div style="font-weight:bold; margin-left:1%;" class="pb-3">
                                 CONFIRM PRODUCT DETAILS
-                            </div>
+                            </div> -->
                             <tbody>
                                 <tr>
                                     <th> Name </th>
@@ -72,11 +77,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-4 bg-light">
+                    <div class="col-4">
                         {% if photo != None %}
-                        <img src={{photo}} alt="lululemon product" class="img-fluid">
+                        <img src={{photo}} alt="lululemon product" class="img-fluid rounded">
                         {% else %}
-                        <img src="{% static 'lulu_alerts/lululogo.png' %}" alt="lululemon product" class="img-fluid">
+                        <img src="{% static 'lulu_alerts/lululogo.png' %}" alt="lululemon product" class="img-fluid bg-light">
                         {% endif %}
                     </div>
                 </div>

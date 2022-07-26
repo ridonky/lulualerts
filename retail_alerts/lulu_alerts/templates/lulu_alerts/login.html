@@ -3,11 +3,13 @@
 
 {% block body %}
   <div class="container my-4">
-    <div class="mx-5 px-5"> 
-      <!-- change mx-2 to change width of container! -->
+    <div class="row justify-content-center">
       {% if message %}
-      <div class="alert alert-primary" role="alert"> {{ message }} </div>
+      <div class="col-11">
+        <div class="alert alert-primary" role="alert"> {{ message }} </div>
+      </div> 
       {% endif %}
+      <div class="col-11 col-md-10 col-lg-8"> 
         <h4 style="text-align:center;"> Login to your account </h4>
           <form class="border px-4 py-3 my-3 rounded bg-light" action ="{% url 'lulu_alerts:login' %}" method="POST">
               {% csrf_token %}
@@ -21,13 +23,10 @@
                 <input type="password" class="form-control" name="password" id="exampleInputPassword1">
               </div>
             </div>
-            <!-- <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Remember me</label>
-              </div> -->
             <input type="submit" class="btn btn-primary mt-2 mx-3 px-3" value="login">
           </form>
           <div class="px-4">Don't have an account yet?  <a href="{% url 'lulu_alerts:signup' %}">Sign up here.</a></div>
       </div>
+    </div>
   </div>
 {% endblock %}

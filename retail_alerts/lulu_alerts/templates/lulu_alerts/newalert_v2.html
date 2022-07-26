@@ -1,4 +1,4 @@
-{% extends  "lulu_alerts/layout_newalert.html" %}
+{% extends  "lulu_alerts/layout_m_newalert.html" %}
 {% load static %}
 {% block nav_item_myalerts %} active {% endblock nav_item_myalerts %}
 {% block menu_item_choose_product %} sidebar-menu-item-selected {% endblock menu_item_choose_product %}
@@ -7,15 +7,15 @@
 {% block body %}    
 <div class="col">
     <div class="new-alert-page">
-        <h1 style="font-weight:bold;">New alert</h1>
+        <h1 style="font-weight:bold;">My {% if alert_type == 'price_drop' %} price drop {% else %} back in stock {% endif %} alert</h1>
         <div class="rectangle">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-auto">
-                        <div class="new-alert-modal align-self-center pt-3 px-4" id="newalertmodal">
+                        <div class="new-alert-modal align-self-center p-4" id="newalertmodal">
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-7 col-sm-auto">
+                                    <div class="col-auto">
                                         <div style="font-weight:bold; font-size: xx-large;"> New alert </div>
                                     </div>
                                     <div class="col align-self-center">
