@@ -86,8 +86,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://www.lulualerts.com',
     'https://lulualerts.herokuapp.com',
     'http://lulualerts.herokuapp.com',
-    'lulualerts.com',
-    'www.lulualerts.com',
 ]
 
 
