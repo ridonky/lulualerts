@@ -35,7 +35,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 AUTH_TOKEN = os.environ['AUTH_TOKEN']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # # old before heroku
 # ALLOWED_HOSTS = []

@@ -3,8 +3,8 @@ import os
 import django
 
 # can i make this setup conditional? IE: look for what the django settings module is then use it to import AUTH TOKEN
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'retail_alerts.settings')
-from retail_alerts.settings import AUTH_TOKEN
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'retail_alerts.dev_settings')
+from retail_alerts.dev_settings import AUTH_TOKEN
 # I DO NOT KNOW
 
 django.setup()
@@ -29,7 +29,6 @@ def alerts_check():
     back_in_stock_alerts = active.filter(alert_type = "back_in_stock")
     price_drop_check(price_drop_alerts)
     back_in_stock_check(back_in_stock_alerts)
-    #continue writing this for back in stock alerts
 
 def price_drop_check(alerts):
     price_drop_triggered_alerts = []
