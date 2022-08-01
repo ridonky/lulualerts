@@ -191,7 +191,7 @@ STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'),]
 
 # END TEST FAVICO FIX
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 LOGGING = {
     'version': 1,
