@@ -190,6 +190,8 @@ STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'),]
 
 # END TEST FAVICO FIX
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
