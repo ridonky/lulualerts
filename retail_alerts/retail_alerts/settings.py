@@ -14,12 +14,6 @@ from pathlib import Path
 import os
 import django_heroku
 
-# # FOR LOCAL
-# from dotenv import load_dotenv
-
-# # load env vars
-# load_dotenv()
-# # END FOR LOCAL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +35,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 AUTH_TOKEN = os.environ['AUTH_TOKEN']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # # old before heroku
 # ALLOWED_HOSTS = []
@@ -58,6 +52,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'lulu_alerts',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,7 +70,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://lulualerts.com',
+    'http://www.lulualerts.com',
+    'https://lulualerts.herokuapp.com',
+    'http://lulualerts.herokuapp.com',
+]
+
 
 ROOT_URLCONF = 'retail_alerts.urls'
 

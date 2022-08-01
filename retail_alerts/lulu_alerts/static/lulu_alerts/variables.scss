@@ -220,7 +220,7 @@ $c-blue: rgb(111,150,255);
 /* Sidebar menu 20 - Item */
 .sidebar-menu-item {
   padding: 16px NaNpx;
-  display: flex;
+  // display: flex;
   justify-content: left;
   color: #565E6CFF;
   background: transparent;
@@ -232,15 +232,14 @@ $c-blue: rgb(111,150,255);
 .sidebar-menu-item-selected {
   @extend .sidebar-menu-item;
   font-weight: bold;
-  // color: #{$primary-blue};
-  // background: #{$background-blue};
   position: relative;
 }
 
 /* Sidebar menu 20 - Icon */
 .sidebar-menu-icon {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 30px;
+  padding-right:10px;
   fill: currentColor;
 }
 

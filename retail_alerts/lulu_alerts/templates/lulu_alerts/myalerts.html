@@ -4,8 +4,9 @@
 
 {% block body %}
 <div class="container">
+    <div class="row" style="padding-bottom:30px;">
     <h1> My alerts </h1>
-    <div class="btn-group d-md-flex justify-content-md-end" role="group" aria-label="Button group with nested dropdown">
+    <div class="btn-group d-flex justify-content-end" role="group" aria-label="Button group with nested dropdown">
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             New alert
@@ -29,14 +30,18 @@
             </tr>
             {% for alert in alerts %}
                     <tr>
-                        <td><a href="{% url 'lulu_alerts:viewalert' id=alert.id %}" class="link">{{alert.product.name}}</a><br>{{alert.product.color}}, size {{alert.product.size}}</td>
+                        <td><a href="{% url 'lulu_alerts:viewalert' id=alert.id %}" class="link">{{alert.product.name}}</a><br>{{alert.product.color}}, sz {{alert.product.size}}</td>
                         {% if alert.alert_type == "price_drop" %}
-                        <td>Price drop</td>
+                        <td>price drop</td>
                         {% else %}
-                        <td>Back in stock</td>
+                        <td>back in stock</td>
                         {% endif %}
                         <td>{{alert.date_set}}</td>
-                        <td>{{alert.status.status}}</td>
+                        {% if alert.status.status == "triggered" %}
+                            <td>sent</td>
+                        {% else %}
+                           <td>{{alert.status.status}}</td>
+                        {% endif %}
                     </tr>
             {% endfor %}
         {% else %}
@@ -52,6 +57,7 @@
         </table>
     </div>
     <nav aria-label="page nav">
+
         <ul class="pagination justify-content-center">
         {% if p.num_pages > 1 %}
             <!-- <li class="page-item"><a class="page-link" href="#">Previous</a></li> -->
@@ -64,5 +70,6 @@
         {% endif %}
         </ul>
     </nav>
+</div>
 </div>
 {% endblock %}

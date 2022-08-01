@@ -341,9 +341,8 @@ def myalerts(request,page=1):
     # pull user and alerts
     u = User.objects.get(username=request.user)
     alert_list = Alerts.objects.filter(user=u.id).order_by('-id')
-    print(u)
-    # 10 per page
-    p = Paginator(alert_list,10)
+    # 5 per page
+    p = Paginator(alert_list,5)
     page_object = p.get_page(page)
 
     

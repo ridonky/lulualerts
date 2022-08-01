@@ -1,17 +1,16 @@
 {% extends "lulu_alerts/layout.html" %}
+<!-- {% load static %} -->
 {% block nav_item_home %} active {% endblock nav_item_home %}
-{% load static %}
 
 {% block body %}
-<div class="position-relative overflow-hidden p-md-5 m-md-3 text-center rounded">
+<div class="position-relative p-4 m-3 text-center rounded">
             <h1><b>Checking lululemon.com again?</b></h1>
             <h3>Stop refreshing and start scoring lulu with <b> back in stock </b> and <b>price drop </b> notifications delivered to your inbox as soon as they happen</h3>
-            <div class="d-grid gap-2 col-5 mx-auto pt-3"> <!--d grid makes them above eachother-->
+            <div class="d-grid gap-2 col-5 mx-auto pt-3">
                 <a href="{% url 'lulu_alerts:signup' %}" class='btn btn-primary'>Sign up FREE!</a><a href="{% url 'lulu_alerts:login' %}" class ='btn btn-outline-primary'>Login</a>
             </div>
         </div>
 <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <div class="carousel-inner">
     <div class="carousel-item active">
         <div class="container">
@@ -23,7 +22,6 @@
                 <div class="col-5">
                     <div class="caro-text">
                         Is your favorite top in <i>that</i> color always out of stock? Get notified as soon as an item gets re-stocked.
-                    <!-- <p class="pt-2"><a href="{% url 'lulu_alerts:products' %}" class="btn btn-primary">Show me</a></p> -->
                     </div>
                 </div>
                 <div class="col-1"></div>
@@ -40,7 +38,6 @@
                 <div class="col-5">
                     <div class="caro-text">
                         Have your eye on something but just can't justify the price? Get alerted when the item goes on sale.
-                    <!-- <p class="pt-2"><a href="#" class="btn btn-primary">Show me</a></p> -->
                     </div>
                 </div>
                 <div class="col-1"></div>

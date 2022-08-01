@@ -1,39 +1,39 @@
 {% extends "lulu_alerts/layout.html" %}
 {% block nav_item_signup %} active {% endblock nav_item_signup %}
 
-<!-- form validaiton with bootstrap is here: https://getbootstrap.com/docs/5.2/forms/validation/-->
 
 {% block body %}
 <div class="container my-4">
-    <div class="mx-2 px-5">
-    <!-- change mx-2 to change width of container! -->  
-      <h4 style="text-align:center;"> Sign up </h4>
-      <!--
-      <form class="border px-4 py-4 my-3 rounded"> -->
-        {% if message %}
+  <div class="row justify-content-center">
+      {% if message %}
+      <div class="col-11">
         <div class="alert alert-warning" role="alert">{{ message }}</div>
-        {% endif %}
-        <form class="border px-4 py-3 my-3 rounded bg-light" method="post"> <!-- not sure i need the method = post? -->
-          <div class="row justify-content-center">
-            {% csrf_token %}
-            <form action="{% url 'lulu_alerts:myalerts'}" method="post"> 
-            {% for fields in form %}
-              <div class="mb-3 px-4 col-12">
-                <div class="form-label">
-                {{ fields.label }}
+      </div>
+      {% endif %}
+      <div class="col-11 col-md-10 col-lg-8">
+        <h4 style="text-align:center;"> Sign up </h4>
+          <form class="border px-4 py-3 my-3 rounded bg-light" method="post">
+            <div class="row justify-content-center">
+              {% csrf_token %}
+              <form action="{% url 'lulu_alerts:myalerts'}" method="post"> 
+              {% for fields in form %}
+                <div class="mb-3 px-4 col-12">
+                  <div class="form-label">
+                  {{ fields.label }}
+                  </div>
+                  {{ fields }}
+                  <div class="form-text text-muted">
+                  {{ fields.help_text }}
+                  </div>
                 </div>
-                {{ fields }}
-                <div class="form-text text-muted">
-                {{ fields.help_text }}
+              {% endfor %}
+                <div class="mt-2 mx-3 px-4 col-12">
+                  <input type="submit" class="btn btn-primary" value="Sign up">
                 </div>
-              </div>
-            {% endfor %}
-            <div class="mt-2 mx-3 px-4 col-12">
-              <input type="submit" class="btn btn-primary" value="Sign up">
-            </div>
-          </form>
-          </div> 
-      </form>
+              </form>
+            </div> 
+        </form>
+    </div>
   </div>
 </div>
 {% endblock %}
