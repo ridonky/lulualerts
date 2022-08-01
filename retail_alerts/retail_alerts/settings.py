@@ -35,7 +35,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 AUTH_TOKEN = os.environ['AUTH_TOKEN']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # # old before heroku
 # ALLOWED_HOSTS = []
@@ -46,7 +46,14 @@ DEBUG = True
 # # end new for heroku
 
 # Allows all hosts
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'http://lulualerts.com',
+    'http://www.lulualerts.com',
+    'https://lulualerts.herokuapp.com',
+    'http://lulualerts.herokuapp.com',
+    'lulualerts.com',
+    'www.lulualerts.com'
+    ]
 
 # Application definition
 
@@ -79,6 +86,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://www.lulualerts.com',
     'https://lulualerts.herokuapp.com',
     'http://lulualerts.herokuapp.com',
+    'lulualerts.com',
+    'www.lulualerts.com',
 ]
 
 
@@ -182,6 +191,20 @@ django_heroku.settings(locals())
 STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'),]
 
 # END TEST FAVICO FIX
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    }
+}
 
 
 # Default primary key field type
