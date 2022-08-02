@@ -22,6 +22,6 @@ urlpatterns = [
     path("myalerts/<int:page>/",views.myalerts,name="myalerts"),
     path("myalerts/alert/<str:id>", views.view_alert, name="viewalert"),
     # path("new_alert=<alert_type>", views.newalert, name="newalert"), # OLD NEW ALERT!!!
-    path("newalert/<alert_type>",views.newalertv2, name="newalertv2"),
     path("newalert/confirm_product",views.newalert_confirmproduct,name="newalert_confirmproduct"),
+    path("newalert/<alert_type>",views.newalertv2, name="newalertv2"),
 ]
