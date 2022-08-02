@@ -191,9 +191,14 @@ USE_TZ = True
 
 # STATIC FILE SETTINGS _ NEW TEST _ COPY OF GITHUB EXAMPLE
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_URL = "/static/" 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #changed from static to staticfiles
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles'),] # added this now...
+STATIC_URL = "static/" 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),] 
+
+
+# add back in:
+django_heroku.settings(locals())
+
 # STATIC FILE SETTINGS _ END NEW TEST
 
 
