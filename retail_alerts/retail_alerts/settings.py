@@ -191,9 +191,8 @@ USE_TZ = True
 
 # STATIC FILE SETTINGS _ NEW TEST _ COPY OF GITHUB EXAMPLE
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_URL = "static/" 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),] 
+STATIC_URL = "/static/" 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # THIS IS PROB THE PROBLEM!
 
 
 # add back in:
