@@ -46,20 +46,25 @@ DEBUG = False
 # # end new for heroku
 
 # Allows all hosts
-ALLOWED_HOSTS = [
-    'http://lulualerts.com',
-    'http://www.lulualerts.com',
-    'https://lulualerts.herokuapp.com',
-    'http://lulualerts.herokuapp.com',
-    'lulualerts.com',
-    'www.lulualerts.com'
-    ]
+IS_HEROKU = "DYNO" in os.environ
+
+
+if IS_HEROKU:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = [
+        'http://lulualerts.com',
+        'http://www.lulualerts.com',
+        'https://lulualerts.herokuapp.com',
+        'http://lulualerts.herokuapp.com',
+        'lulualerts.com',
+        'www.lulualerts.com'
+        ]
 
 # Application definition
 
 INSTALLED_APPS = [
     'lulu_alerts',
-    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,6 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions', 
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -129,7 +135,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'd17udcmv0dhs12',
         'USER': 'yafbiyjfcnjyjt',
-        # REMOTE
         'PASSWORD' : os.environ['POSTGRES_DB_PASSWORD'],
         'HOST': 'ec2-18-214-35-70.compute-1.amazonaws.com',
         'PORT': '5432',
@@ -171,27 +176,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-# #OLD BEFORE HEROKU
-# STATIC_URL = '/static/'
 
-# STATICFILES_DIR = [
-#     os.path.join(BASE_DIR,"static"),
-#     BASE_DIR / 'static/']
+# STATIC FILE SETTINGS - OLD I GUESS
+    # STATIC_ROOT = os.path.join(BASE_DIR, 'static') # this is fine, 100%
+    # STATIC_URL = "/static/" # this is fine, 90%
 
-# # END OLD BEFORE HEROKU
+    # STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'),] # this is spelled wrong - can change to DIRS and also test- its nto in github test
 
-# NEW FOR HEROKU
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = "/static/"
-django_heroku.settings(locals())
-# END NEW FOR HEROKU
+    # # for whitenoise 
+    # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# TEST FAVICO FIX
-STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'),]
+    # django_heroku.settings(locals()) # NEED TO LOOK INTO! tried removing
+# END STATIC FILE SETTINGS
 
-# END TEST FAVICO FIX
+# STATIC FILE SETTINGS _ NEW TEST _ COPY OF GITHUB EXAMPLE
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #changed from static to staticfiles
+STATIC_URL = "static/" 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATIC FILE SETTINGS _ END NEW TEST
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 LOGGING = {
     'version': 1,
