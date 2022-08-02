@@ -3,7 +3,7 @@
 {% block nav_item_home %} active {% endblock nav_item_home %}
 
 {% block body %}
-<div class="container text-center">
+<div class="container text-center mt-3">
     <h1 style="color:#661FFF;"><b>Checking lululemon.com again?</b></h1>
     <h3>Stop refreshing and start scoring lulu with <b> back in stock </b> and <b>price drop </b> notifications delivered to your inbox as soon as they happen</h3>
     <div class="d-grid gap-2 col-5 mx-auto pt-3">
@@ -11,8 +11,12 @@
     </div>
 </div>
 <!-- NEW! image test -->
-<div class="text-center" style="margin-left:-2%; margin-right:-2%; margin-top:-2%;">
-    <img src="{% static 'lulu_alerts/clothesfall.png' %}" class="img-fluid" style="width:100%;">
+<div style="margin-top:-2%; overflow-x:hidden;">
+    <picture>
+        <source media="(min-width:760px)" srcset="{% static 'lulu_alerts/clothesfall_lg.png' %}">
+        <source media="(min-width:450px)" srcset="{% static 'lulu_alerts/clothesfall_sm.png' %}">
+        <img src="{% static 'lulu_alerts/clothesfall_sm.png' %}" class="img-fluid" style="max-width: 101%;">
+    </picture>
 </div>
 <div style="background-color:#661FFF; margin-top:-1%;">
     <div class ="container rounded pt-5">
