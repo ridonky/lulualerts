@@ -190,9 +190,10 @@ USE_TZ = True
 # END STATIC FILE SETTINGS
 
 # STATIC FILE SETTINGS _ NEW TEST _ COPY OF GITHUB EXAMPLE
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #changed from static to staticfiles
-STATIC_URL = "static/" 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATIC_URL = "/static/" 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #changed from static to staticfiles
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),] # added this now...
 # STATIC FILE SETTINGS _ END NEW TEST
 
 
