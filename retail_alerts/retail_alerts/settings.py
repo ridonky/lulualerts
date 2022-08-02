@@ -181,7 +181,7 @@ USE_TZ = True
     # STATIC_ROOT = os.path.join(BASE_DIR, 'static') # this is fine, 100%
     # STATIC_URL = "/static/" # this is fine, 90%
 
-    # STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'),] # this is spelled wrong - can change to DIRS and also test- its nto in github test
+    # STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'),] # this is spelled wrong - have to change to DIRS and also test- its nto in github test
 
     # # for whitenoise 
     # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -191,9 +191,8 @@ USE_TZ = True
 
 # STATIC FILE SETTINGS _ NEW TEST _ COPY OF GITHUB EXAMPLE
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_URL = "static/" 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),] 
+STATIC_URL = "/static/" 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # THIS IS PROB THE PROBLEM!??
 
 
 # add back in:
