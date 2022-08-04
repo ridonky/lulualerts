@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col mt-3 mb-3 no-spinner">
-                                        <div class="d-flex flex-wrap align-items-center"> <span class="align-text-middle">Provide lululemon product URL</span></div>
+                                        <div class="d-flex flex-wrap align-items-center"> <span class="align-text-middle">Paste your <a href="http://www.lululemon.com" target=”_blank”>lululemon.com</a> product link</span></div>
                                         <form method="POST" id = "product_url" action="{% url 'lulu_alerts:newalertv2' alert_type=alert_type %}">
                                             {% csrf_token %}
                                             {% for field in product_form %}

@@ -1,4 +1,15 @@
-.btn-outline-primary, .btn-primary {
+.link, a {
+  color: #834AFF;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.link:hover, a:hover {
+  color: #A074FE;
+  text-decoration: none;
+}
+
+.btn-outline-primary, a.btn-outline-primary, .btn-primary, a.btn-primary {
   --bs-btn-font-weight: 600;
   --bs-btn-border-radius: .5rem;
   --bs-btn-hover-border-color: var(--bs-btn-hover-bg);
@@ -6,7 +17,7 @@
   --bs-btn-padding-y: 7px;
 }
 
-.btn-primary {
+.btn-primary, a.btn-primary {
   --bs-btn-bg: #661FFF;
   --bs-btn-border-color: var(--bs-btn-bg);
   --bs-btn-color:white;
@@ -25,7 +36,7 @@
   --bs-btn-disabled-border-color: #CCCCCC;
 }
 
-.btn-outline-primary {
+.btn-outline-primary, a.btn-outline-primary {
   --bs-btn-bg: white;
   --bs-btn-border-color: #A074FE;
   --bs-btn-color:#661FFF;
@@ -74,17 +85,6 @@
 
 .caro-text {
   font-size: 110%;
-}
-
-.link, a {
-  color: #834AFF;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.link:hover, a:hover {
-  color: #A074FE;
-  text-decoration: none;
 }
 
 .sidebar-menu {

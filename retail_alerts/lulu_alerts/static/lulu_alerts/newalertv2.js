@@ -12,6 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    document.querySelector('#product_url').onpaste = () => {
+        if (document.querySelector('#id_productquery').value.length > 0) {
+            document.querySelector('#url_submit').disabled = false;
+        }
+        else {
+            document.querySelector('#url_submit').disabled = true;
+        }
+    }
+
     // // show a way to follow url if there is a URL filled in in the form
     // if (document.querySelector('#product_url').value != ''){
     //     pass

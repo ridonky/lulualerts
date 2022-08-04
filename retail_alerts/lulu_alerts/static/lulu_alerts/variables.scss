@@ -1,41 +1,7 @@
 // to apply changes, run sass variables.scss:variables.css -- have to be IN static/lulu_alerts
 
 // custom theme colors
-// $c-orange: rgb(255,199,115);
-// $c-l-purple: rgb(254,212,252);
-// $c-yellow: rgb(255,212,82);
-// $c-d-purple: rgb(148,110,220);
 $c-blue: rgb(111,150,255);
-// $c-hot-pink: rgb(238,50,189);
-// $c-lp-1: rgb(255,249,232);
-// $c-blue-cadet: #3B3561;
-
-
-// NEW THEME - to ignore
-// // new custom theme colors
-// $logo-orange: #FF6663FF;
-// $background-blue: #BFD7EA;
-
-// // for pressed buttons
-// $p-blue: #7DADD5;
-// $p-blue-text:#29587E;
-
-// // for hover solid buttons:
-// $h-blue:#9DC2DFFF;
-// $h-blue-text:#29587EFF;
-
-
-// // for disabled buttons
-// $d-blue:#A4BECD;
-// $d-blue-text:#E5E5E5;
-// $d-orange:#b57c7c;
-// $d-orange-text:#584f4f;
-
-// // for dark text and button fill
-// $primary-blue: #0B3954;
-// $lime-green:#D6FF1F;
-// $text-on-lime-green:#576B00;
-// $lime-green-border:#e9ff89;
 
 
 // New Colors V2
@@ -48,7 +14,6 @@ $c-blue: rgb(111,150,255);
   $outline-grey: #C2C2C2;
   $grey-0: #CCCCCC;
   $grey-1: #909090;
-  // $dope-purple-3-rgb: rgb(87, 9, 255);
 
 
 // Primary Button - Enabled state
@@ -76,6 +41,17 @@ $c-blue: rgb(111,150,255);
   $btn-border-color-variable-outlined-hover: #{dope-purple-3};
   $btn-color-variable-outlined-hover: #{$dope-purple};
 
+// links
+  .link, a{
+    color: #{$dope-purple-1};
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .link:hover, a:hover{
+    color: #{$dope-purple-0};
+    text-decoration:none;
+  }
 
 
 // buttons
@@ -87,7 +63,7 @@ $c-blue: rgb(111,150,255);
   --bs-btn-padding-y: 7px;
 }
 
-.btn-primary {
+.btn-primary, a.btn-primary {
     @extend %def-button;
     --bs-btn-bg: #{$btn-background-variable-primary-enabled};
     --bs-btn-border-color: var(--bs-btn-bg);
@@ -111,7 +87,7 @@ $c-blue: rgb(111,150,255);
     --bs-btn-disabled-border-color: #{$btn-border-color-variable-primary-disabled};
   }
 
-.btn-outline-primary{
+.btn-outline-primary, a.btn-outline-primary {
   @extend %def-button;
   --bs-btn-bg: #{$btn-background-variable-outlined-enabled};
   --bs-btn-border-color: #{$btn-border-color-variable-outlined-enabled};
@@ -185,17 +161,6 @@ $c-blue: rgb(111,150,255);
 
 .caro-text{
   font-size:110%;
-}
-
-.link, a{
-  color: #{$dope-purple-1};
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.link:hover, a:hover{
-  color: #{$dope-purple-0};
-  text-decoration:none;
 }
 
 

@@ -21,7 +21,7 @@ class ProductQueryForm(forms.Form):
         label="", 
         label_suffix="", 
         help_text="Remember to select your size and color at lululemon.com",
-        widget=forms.URLInput(attrs={"class":"form-control", "autofocus":"autofocus"}))
+        widget=forms.URLInput(attrs={"class":"form-control", "autofocus":"autofocus", "placeholder":"https://shop.lululemon.com/..."}))
 
 # Test form - this is how you do a drop down!
 class Test_form(forms.Form):
