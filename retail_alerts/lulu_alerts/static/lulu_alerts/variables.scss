@@ -61,6 +61,8 @@ $c-blue: rgb(111,150,255);
   --bs-btn-hover-border-color: var(--bs-btn-hover-bg);
   --bs-btn-padding-x: 10px;
   --bs-btn-padding-y: 7px;
+  line-height: 1.5;
+  border-radius: 8px;
 }
 
 .btn-primary, a.btn-primary {
