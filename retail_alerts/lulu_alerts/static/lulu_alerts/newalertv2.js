@@ -12,20 +12,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    document.querySelector('#product_url').onpaste = () => {
-        if (document.querySelector('#id_productquery').value.length > 0) {
+
+    document.querySelector('#id_productquery').addEventListener('paste', (e) => {
+
+        let paste = (e.clipboardData || window.clipboardData).getData('text');
+        if (paste.length > 0) {
             document.querySelector('#url_submit').disabled = false;
         }
         else {
             document.querySelector('#url_submit').disabled = true;
         }
-    }
+    });
 
-    // // show a way to follow url if there is a URL filled in in the form
-    // if (document.querySelector('#product_url').value != ''){
-    //     pass
-    // }
-
+   
     // show spinner on product url form submit
     document.querySelector('#product_url').onsubmit = () =>{
         // find what the user just submitted
