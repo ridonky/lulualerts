@@ -88,19 +88,19 @@
             </div>
         </div>
         {% if not product.price or not product.name or not product.color or not product.size %}
-        <div class="alert alert-warning mx-3" role="alert">You may have forgotten to select a color, size or other product attribute. Re-visit your <a href="{{product.url}}" target=”_blank”>lululemon.com product page</a>, make updates to your selections, then click "Change product link" to provide the updated URL</div>
+        <div class="alert alert-warning mx-3" role="alert">You may have forgotten to select a color, size or other product attribute. Re-visit your <a href="{{product.url}}" target=”_blank”>lululemon.com product page</a>, make updates to your selections, then click "Edit link" to provide the updated URL</div>
         <div class="text-center">
-            <a type=button class="btn btn-outline-primary" href="{% url 'lulu_alerts:newalertv2' alert_type=alert_type %}">Change product link</a>
+            <a class="btn btn-outline-primary" href="{% url 'lulu_alerts:newalertv2' alert_type=alert_type %}">Edit link</a>
         </div>
         {% elif alert_type == 'back_in_stock' and product.in_stock == True %}
         <div class="alert alert-warning mx-3" role="alert">Looks like this product is in stock! If you meant to set a price drop alert, <a href="{% url 'lulu_alerts:newalertv2' alert_type='price_drop' %}">click here</a> </div>
         <div class="text-center">
-            <a type=button class="btn btn-outline-primary" href="{% url 'lulu_alerts:newalertv2' alert_type=alert_type %}">Change product link</a>
+            <a class="btn btn-outline-primary" href="{% url 'lulu_alerts:newalertv2' alert_type=alert_type %}">Edit link</a>
         </div>
         {% else %}
         <div class="text-center" id="product-detail-buttons">
-            <a type=button class="btn btn-outline-primary" href="{% url 'lulu_alerts:newalertv2' alert_type=alert_type %}">Change product link</a>
-            <a type=button class="btn btn-primary" id="product-is-good-button">Looks good!</a>
+            <a class="btn btn-outline-primary" href="{% url 'lulu_alerts:newalertv2' alert_type=alert_type %}">Edit link</a>
+            <a class="btn btn-primary" id="product-is-good-button">Looks good!</a>
         </div>
         {% endif %}
         <div style="display:none;" id="alert-settings-div">
@@ -163,7 +163,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <a type=button class="btn btn-outline-primary" href="{% url 'lulu_alerts:newalertv2' alert_type=alert_type %}">Change product link</a>
+                    <a class="btn btn-outline-primary" href="{% url 'lulu_alerts:newalertv2' alert_type=alert_type %}">Edit link</a>
                     <input type="hidden" name="url" value= "{{product.url}}">
                     <input type="hidden" name="product_name" value="{{product.name}}">
                     <input type="hidden" name="color" value="{{product.color}}">
