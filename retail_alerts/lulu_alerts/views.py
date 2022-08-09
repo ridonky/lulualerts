@@ -138,66 +138,6 @@ def logout_view(request):
     logout(request)
     return render(request, "lulu_alerts/login.html", {"message": "logged out."})
 
-@login_required(login_url='lulu_alerts:login')
-def newalert(request, alert_type):
-    if request.method == "POST":
-        if 'target_price' in request.POST:
-            target_price = request.POST['target_price']
-            product = get_product_details(request.POST['url'])
-            if target_price == "current_price":
-                t_price = int(product["price"]) - .01
-            else:
-                t_price = request.POST['target_price_custom']
-            p = Products.objects.create(name=product["name"], color=product["color"], size=product["size"], price=product["price"],url=product["url"],currency=product["currency"])
-            p.save()
-            u = User.objects.get(username = request.user)
-            s = Alert_Status.objects.get(id=1)
-            alert = Alerts.objects.create(product=p,user=u,alert_type=alert_type,status=s,target_price=t_price,date_set=date.today(),alert_method="email")
-            alert.save()
-
-            # fetch users list of alerts to pass them to my alerts!
-            alerts = Alerts.objects.filter(user=u.id).order_by('-id')
-
-            new_alert_message = "new alert created!"
-            return render(request, "lulu_alerts/myalerts.html", {
-                "new_alert_message":new_alert_message,
-                "product": product,
-                "alert_type": alert_type,
-                "alerts": alerts
-            })
-
-        elif ProductQueryForm(request.POST):
-            product_form = ProductQueryForm(request.POST)
-            if product_form.is_valid():
-                cleaned = product_form.cleaned_data
-                print(f'form includes {cleaned["productquery"]}')
-                product = get_product_details(cleaned["productquery"])
-                return render(request,"lulu_alerts/newalert.html", {
-                    "product": product,
-                    "product_form": product_form,
-                    "alert_type": alert_type,
-                })
-            else:
-                return render(request,"lulu_alerts/newalert.html", {
-                    "alert_type": alert_type,
-                    "product_form": product_form,
-                })
-        else:
-            return render(request, "lulu_alerts/newalert.html", {
-                "product_form": product_form,
-                "alert_type": alert_type,
-                "form": Test_form()
-            })
-
-    else:
-        return render(request,"lulu_alerts/newalert.html", {
-            "product_form": ProductQueryForm(),
-            # "alert_config_form": ConfigAlertForm(),
-            "alert_type": alert_type,
-            "form": Test_form()
-    })
-
-
 def lulu_url_check(url):
     # check if its a lulu url
     if 'mirror.co' in str(url):
