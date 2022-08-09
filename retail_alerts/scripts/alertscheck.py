@@ -5,18 +5,17 @@ import django
 # can i make this setup conditional? IE: look for what the django settings module is then use it to import AUTH TOKEN
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'retail_alerts.settings')
 from retail_alerts.settings import AUTH_TOKEN
-# I DO NOT KNOW
 
 django.setup()
 
 # Modules for django models, scraping, and sending notifs
 from trycourier import Courier
-from lulu_alerts.models import Products, Alerts, Alert_Status, Notifications, Notif_Status, Notif_Origin
+from lulu_alerts.models import Alerts, Alert_Status, Notifications, Notif_Status
 from time import sleep
 from datetime import datetime
 import requests
 import json
-from scripts.scrape import price, stock_status #, get_product_details, get_size, get_color
+from scripts.scrape import price, stock_status 
 
 # Set up scheduler
 #reference: https://github.com/agronholm/apscheduler/blob/3.x/examples/schedulers/background.py
@@ -44,7 +43,7 @@ def price_drop_check(alerts):
                 # add to list & switch to triggered
                 alert.status = Alert_Status.objects.get(id=2)
                 alert.save()
-                price_drop_triggered_alerts.append(alert) # maybe here is where i turn the alert to triggered?
+                price_drop_triggered_alerts.append(alert)
             else:
                 # check the next alert. or maybe shoudl check the next url
                 print(f'no price drop for {alert}')
@@ -55,7 +54,7 @@ def price_drop_check(alerts):
     notify('price_drop',price_drop_triggered_alerts)
 
 def notify(alert_type,alerts):
-    for alert in alerts: # HERE DO A TRY EXCEPT! definitely.
+    for alert in alerts: # HERE DO A TRY EXCEPT!
         new_notif=Notifications(alert=alert,status=Notif_Status.objects.get(id=1))
         new_notif.save()
         print('created new notif')
@@ -97,9 +96,9 @@ def price_drop_notif(alert):
         },
       }
     )
-    x = resp['requestId']
-    print(x)
-    return x
+    response_id = resp['requestId']
+    print(response_id)
+    return response_id
 
 def back_in_stock_check(alerts):
     back_in_stock_triggered_alerts = []
@@ -131,9 +130,9 @@ def back_in_stock_notif(alert):
             }
         }
     )
-    x = resp['requestId']
-    print(x)
-    return x
+    response_id = resp['requestId']
+    print(response_id)
+    return response_id
 
 def confirm_notif(notif_response_id):
     url = (f"https://api.courier.com/messages/{notif_response_id}")
@@ -142,56 +141,15 @@ def confirm_notif(notif_response_id):
     "Authorization":f"Bearer {AUTH_TOKEN}"
     }
     response = requests.request("GET", url, headers=headers)
-    x = json.loads(response.text)["status"]
-    print(x)
-    return x
-
+    status = json.loads(response.text)["status"]
+    return status
 
 
 def run():
     scheduler = BackgroundScheduler()
     scheduler.add_job(alerts_check,'interval',minutes=30)
-    print('program running')
     scheduler.start()
     
 
 
 
-
-
-
-
-# URL HANDLING:
-
-# URL Processer: normalizes user provided URL into 2 urls to get for sale pages
-# def urls_alt(quote_page):
-#     urls={}
-#     p = urlparse(quote_page)
-#     cleanpath = p.path.split("_")[0] # removes the sku from the URL if its there
-#     if "-MD" not in p.path:
-#         urls["regular"] = urlunsplit((p.scheme,p.netloc,cleanpath,p.query,p.fragment))
-#         # store the reg url, the add the MD
-#         cleanpath = cleanpath.removesuffix("/") + "-MD/"
-#         urls["md"] = urlunsplit((p.scheme,p.netloc,cleanpath,p.query,p.fragment))
-#     else:
-#         urls["md"] = urlunsplit((p.scheme,p.netloc,cleanpath,p.query,p.fragment))
-#         # store the md url, then add the reg
-#         cleanpath = cleanpath.removesuffix("-MD/") + "/"
-#         urls["regular"] = urlunsplit((p.scheme,p.netloc,cleanpath,p.query,p.fragment))
-#     return urls
-
-
-# return the right url to look for for a particular product.
-# def confirm_url(url,product):
-#     p = get_product_details(url)
-#     if p['color'] != product.color or p['size'] != product.size:
-#         alt = urls_alt(url)
-#         if get_size(alt['md']) == product.size and get_color(alt['md']) == product.color:
-#             return alt['md']
-#         elif get_size(alt['url']) == product.size and get_color(alt['md']) == product.color:
-#             return alt['url']
-#         else:
-#             return None
-#     else:
-#         return url
-#     # all product details are on the product page its the right url, else process it

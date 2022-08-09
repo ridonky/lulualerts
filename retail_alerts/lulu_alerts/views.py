@@ -15,7 +15,7 @@ from scripts.alertscheck import run
 
 # Create your views here.
 
-# For for product URL
+# Form for product URL
 class ProductQueryForm(forms.Form):
     productquery = forms.URLField(
         label="", 
@@ -23,22 +23,8 @@ class ProductQueryForm(forms.Form):
         help_text="Remember to select your size and color at lululemon.com",
         widget=forms.URLInput(attrs={"class":"form-control", "autofocus":"autofocus", "placeholder":"https://shop.lululemon.com/..."}))
 
-# Test form - this is how you do a drop down!
-class Test_form(forms.Form):
-    EMAIL = 'EMAIL'
-    METHOD_CHOICES = [
-        (EMAIL, 'Email'),
-    ]
-    alert_method = forms.ChoiceField(
-        choices = METHOD_CHOICES,
-        error_messages={"required":"Must provide email"}
-    )
-# end test
-
 # Form for user signup
 class CustomUserCreationForm(UserCreationForm):
-    # firstname = forms.CharField(label='First name', max_length=30, required=True,widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    # email = forms.EmailField(label='Email address', help_text="Your email is required to recieve notifications. We'll never share it with anyone else.", required=True, widget=forms.TextInput(attrs={'class' : 'form-control'}))
     password1 = forms.CharField(label='Password', 
         help_text='Your password must contain at least 8 characters.',
         min_length=8, 
@@ -67,19 +53,16 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ("first_name", "email", "username", "country", "password1", "password2")
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control', "autofocus":"autofocus"}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', "autofocus":"autofocus", 'required': True}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'required': True}),
         }
 
     def check_password_match(self):
         password1 = self.cleaned_data.get("password1")
-        print("im checking")
         password2 = self.cleaned_data.get("password2")
         if password1 != password2:
-            print('its false')
             return False
-        print('its true')
         return True
 
     def save(self, commit=True): 
@@ -110,7 +93,6 @@ def login_view(request):
     
     return render(request, "lulu_alerts/login.html", {"message": "Invalid credentials"})
 
-# logged in views
 def signup(request):
     if request.method == "POST":
         form=CustomUserCreationForm(request.POST)
@@ -150,71 +132,11 @@ def user_alert_id_permission(request,id):
     except:
         Exception
 
-
+# logged in views
 @login_required(login_url='lulu_alerts:login')
 def logout_view(request):
     logout(request)
     return render(request, "lulu_alerts/login.html", {"message": "logged out."})
-
-@login_required(login_url='lulu_alerts:login')
-def newalert(request, alert_type):
-    if request.method == "POST": # can i also check like a request id??  for actually submitting to DB
-        if 'target_price' in request.POST:
-            target_price = request.POST['target_price']
-            product = get_product_details(request.POST['url'])
-            if target_price == "current_price":
-                t_price = int(product["price"]) - .01
-            else:
-                t_price = request.POST['target_price_custom']
-            p = Products.objects.create(name=product["name"], color=product["color"], size=product["size"], price=product["price"],url=product["url"],currency=product["currency"])
-            p.save()
-            u = User.objects.get(username = request.user)
-            s = Alert_Status.objects.get(id=1)
-            alert = Alerts.objects.create(product=p,user=u,alert_type=alert_type,status=s,target_price=t_price,date_set=date.today(),alert_method="email")
-            alert.save()
-
-            # fetch users list of alerts to pass them to my alerts!
-            alerts = Alerts.objects.filter(user=u.id).order_by('-id')
-
-            new_alert_message = "new alert created!"
-            return render(request, "lulu_alerts/myalerts.html", {
-                "new_alert_message":new_alert_message,
-                "product": product,
-                "alert_type": alert_type,
-                "alerts": alerts
-            })
-
-        elif ProductQueryForm(request.POST):
-            product_form = ProductQueryForm(request.POST)
-            if product_form.is_valid():
-                cleaned = product_form.cleaned_data
-                print(f'form includes {cleaned["productquery"]}')
-                product = get_product_details(cleaned["productquery"])
-                return render(request,"lulu_alerts/newalert.html", {
-                    "product": product,
-                    "product_form": product_form,
-                    "alert_type": alert_type,
-                })
-            else:
-                return render(request,"lulu_alerts/newalert.html", {
-                    "alert_type": alert_type,
-                    "product_form": product_form,
-                })
-        else:
-            return render(request, "lulu_alerts/newalert.html", {
-                "product_form": product_form,
-                "alert_type": alert_type,
-                "form": Test_form()
-            })
-
-    else:
-        return render(request,"lulu_alerts/newalert.html", {
-            "product_form": ProductQueryForm(),
-            # "alert_config_form": ConfigAlertForm(),
-            "alert_type": alert_type,
-            "form": Test_form()
-    })
-
 
 def lulu_url_check(url):
     # check if its a lulu url
@@ -238,13 +160,7 @@ def newalertv2(request,alert_type):
                 request.session['product']=product # store it in the session instead of requiring args for now...
                 request.session['alert_type']=alert_type
                 request.session['url']=url
-                return HttpResponseRedirect(reverse("lulu_alerts:newalert_confirmproduct")) # kwargs={'alert_type':alert_type, 'url':'url', 'product':product}))
-                return render(request, "lulu_alerts/newalert_v2.html",{
-                    "product_form": product_form,
-                    "product":product,
-                    "alert_type":alert_type,
-                    "url":url
-                })
+                return HttpResponseRedirect(reverse("lulu_alerts:newalert_confirmproduct"))
             else:
                 error = lulu_url_check(url)
                 return render(request,"lulu_alerts/newalert_v2.html",{
@@ -253,12 +169,10 @@ def newalertv2(request,alert_type):
                 "error":error
             })
         else: #form is not valid, give them whats there. - it may not have been a lulu URL!
-            print("fucking invalid form")
             return render(request,"lulu_alerts/newalert_v2.html",{
                 "product_form":product_form,
                 "alert_type":alert_type,
             })
-    print("treating it like a get req")
     return render(request, "lulu_alerts/newalert_v2.html", {
         "product_form": ProductQueryForm(),
         "alert_type": alert_type,
@@ -266,7 +180,7 @@ def newalertv2(request,alert_type):
 
 
 @login_required(login_url='lulu_alerts:login')
-def newalert_confirmproduct(request): #alert_type,url,product
+def newalert_confirmproduct(request): 
     product = request.session['product']
     url = request.session['url']
     alert_type = request.session['alert_type']
@@ -298,7 +212,7 @@ def newalert_confirmproduct(request): #alert_type,url,product
         return render(request, "lulu_alerts/myalerts.html", {
             # alert message to make it nice and confirmy
             "new_alert_message":new_alert_message,
-            # dont think we need alert type???
+            # do we need alert type???
             "alert_type": alert_type, 
             "alerts": alerts,
         })
@@ -324,18 +238,6 @@ def view_alert(request,id):
     else:
         return redirect("lulu_alerts:myalerts")
 
-
-# @login_required(login_url='lulu_alerts:login')
-# def myalerts(request):
-#     if 'alerts' not in request.GET or request.POST:
-#         u = User.objects.get(username=request.user)
-#         alerts = Alerts.objects.filter(user=u.id).order_by('-id')
-#     return render(request, "lulu_alerts/myalerts.html", {
-#         "alerts": alerts,
-#     })
-
-
-# TEST PAGE FOR PAGINATION
 @login_required(login_url='lulu_alerts:login')
 def myalerts(request,page=1):
     # pull user and alerts
@@ -344,7 +246,6 @@ def myalerts(request,page=1):
     # 5 per page
     p = Paginator(alert_list,5)
     page_object = p.get_page(page)
-
     
     return render(request, "lulu_alerts/myalerts.html", {
         "alerts":page_object,

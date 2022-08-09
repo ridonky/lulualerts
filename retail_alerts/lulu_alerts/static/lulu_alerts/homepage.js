@@ -40,38 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
         else {
             document.querySelector('#homepageinfo').style.opacity = 0;
         };
-
-
-        // if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
-        //     const default_borderWidth = document.querySelector('#bottomcta').style.borderWidth;
-        //     const default_borderColor = document.querySelector('#bottomcta').style.borderColor;
-            
-        //     document.querySelector('#bottomcta').style.borderWidth = "10px";
-        //     document.querySelector('#bottomcta').style.borderColor = "yellow";
-        //     let id2 = null;
-        //     let counter = 0;
-
-        //     clearInterval(id2);
-        //     setInterval(timer,500);
-
-        //     function timer() {
-        //         if (counter = 1)
-        //         {
-        //             document.querySelector('#bottomcta').style.borderWidth = default_borderWidth;
-        //             document.querySelector('#bottomcta').style.borderColor = default_borderColor;
-        //             clearInterval(id2);
-        //         }
-        //         else {
-        //             counter++;
-        //         }
-        //     }
-        // }
-
-        // else {
-        //     document.querySelector('#bottomcta').style.borderWidth = default_borderWidth;
-        //     document.querySelector('#bottomcta').style.borderColor = default_borderColor;
-        // }
-
     
     };
 

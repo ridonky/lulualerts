@@ -1,4 +1,4 @@
-{% extends "lulu_alerts/layout_m_newalert.html" %}
+{% extends "lulu_alerts/layout_newalertv2.html" %}
 {% load static %}
 {% block nav_item_myalerts %} active {% endblock nav_item_myalerts %}
 {% block menu_item_confirm_details %} sidebar-menu-item-selected {% endblock menu_item_confirm_details %}
@@ -6,7 +6,7 @@
 {% block body %}
 <div class="col">
     <div class="product-details-page">
-        <h1 style="font-weight:bold;">
+        <h1>
             New 
             {% if alert_type == 'price_drop' %} 
             price drop
@@ -17,21 +17,18 @@
         <div class="product-details-rectangle py-3 mb-3 rounded">
             <div class="container align-self-center">
                 <div class="row">
-                    <div style="font-weight:bold; margin-left:1%;" class="pb-3">
+                    <h2 class="pb-3">
                         CONFIRM PRODUCT DETAILS
-                    </div>
+                    </h2>
                 </div>
                 <div class="row">
                     <div class=col>
                         <table class="table">
-                            <!-- <div style="font-weight:bold; margin-left:1%;" class="pb-3">
-                                CONFIRM PRODUCT DETAILS
-                            </div> -->
                             <tbody>
                                 <tr>
                                     <th> Name </th>
                                     {% if not product.name %}
-                                    <td style="color:red;">missing product name</td>
+                                    <td class="missing">missing product name</td>
                                     {% else %}
                                     <td> {{product.name}} </td>
                                     {% endif %}
@@ -39,7 +36,7 @@
                                 <tr>
                                     <th> Color </th>
                                     {% if not product.color %}
-                                    <td style="color:red;">missing color</td>
+                                    <td class="missing">missing color</td>
                                     {% else %}
                                     <td> {{product.color}} </td>
                                     {% endif %}
@@ -47,7 +44,7 @@
                                 <tr>
                                     <th> Size </th>
                                     {% if not product.size %}
-                                    <td style="color:red;">missing size</td>
+                                    <td class="missing">missing size</td>
                                     {% else %}
                                     <td> {{product.size}} </td>
                                     {% endif %}
@@ -61,7 +58,7 @@
                                 <tr>
                                     <th> Price </th>
                                     {% if not product.price %}
-                                    <td style="color:red;">missing price</td>
+                                    <td class="missing">missing price</td>
                                     {% else %}
                                     <td> ${{product.price}} {{product.currency}} </td>
                                     {% endif %}
@@ -108,12 +105,12 @@
                 {% csrf_token %}
                 <div class="product-details-rectangle py-3 px-2 mb-3 rounded">
                     <div class="container align-self-center">
-                        <table class="table" style="border-color:white;">
+                        <table class="table">
                             <div class="row">
                                 <div class="col">
-                                <div style="font-weight:bold; margin-left:1%;" class="pb-3">
+                                <h3 class="pb-3">
                                     ALERT SETTINGS
-                                </div>
+                                </h3>
                                 <tbody>
                                     {% if alert_type == 'price_drop' %}
                                     <tr>       
@@ -133,8 +130,8 @@
                                                 <label for="current_price"> below ${{product.price}} {{product.currency}} </label></br>
                                                 <input type="radio" name="target_price" value="customize_price" id="customize_price" onclick="requirecustom()">
                                                 <label for="customize_price">enter a custom price: </label>
-                                                <label for="custom_price" style="margin-left:1%;">$</label>
-                                                <input type="number" step="0.01" display="none" name="target_price_custom" id="custom_price" placeholder="{{product.price}}" style="width:15%;" max="{{product.price}}">
+                                                <label for="custom_price">&nbsp; $</label>
+                                                <input type="number" step="0.01" display="none" name="target_price_custom" id="custom_price" placeholder="{{product.price}}" max="{{product.price}}">
                                                 <label for="custom_price">{{product.currency}}</label>
                                             </td>
                                     </tr>    

@@ -1,10 +1,10 @@
 // to apply changes, run sass variables.scss:variables.css -- have to be IN static/lulu_alerts
 
-// custom theme colors
+
 $c-blue: rgb(111,150,255);
 
-
-// New Colors V2
+// Global Styles
+// Color Variables
   $dope-purple-lt: #D5C9E7;
   $dope-purple-0:#A074FE;
   $dope-purple-1:#834AFF;
@@ -107,25 +107,24 @@ $c-blue: rgb(111,150,255);
   --bs-btn-active-bg:var(--bs-btn-hover-bg);
   --bs-btn-active-color:var(--bs-btn-hover-color);
   --bs-btn-active-border-color:var(--bs-btn-focus-shadow-rgb);
-
-  //todo: make the disabled button!
-
 }
 
-// .btn-secondary{
-//   @extend %def-button;
-//   --bs-btn-bg:#{$primary-blue};
-//   --bs-btn-color:white;
-//   --bs-btn-hover-bg:#{$h-blue};
-//   --bs-btn-hover-color:#{$h-blue-text};
-//   --bs-btn-active-bg:#{$p-blue};
-//   --bs-btn-active-color:#{$p-blue-text};
-//   --bs-btn-disabled-bg:#{$d-blue};
-//   --bs-btn-disabled-color:white;
-//   --bs-btn-disabled-border-color: var(--bs-btn-disabled-bg);
-// }
+.dropdown-item:active {
+  background-color:#{$dope-purple-0};
+}
 
-// END IGNORE
+.badge {
+  background:#{$dope-purple-0};
+  color:white;
+  font-size:small;
+  text-align: right;
+}
+
+.alert-warning, .alert-primary {
+  --bs-alert-bg: #{$dope-purple-lt};
+  --bs-alert-border-color: #{$dope-purple-3};
+  --bs-alert-color: #{$dope-purple};
+}
 
 
 // pagination
@@ -166,13 +165,13 @@ $c-blue: rgb(111,150,255);
 }
 
 
+/* layout_newalertv2, newalert_confirmproduct, newalert_v2 styles */
 .sidebar-menu {
   font-family: (var(--bs-body-font-family));
   font-size: 16px;
   line-height: 30px;
   opacity: 1;
   padding: 16px NaNpx;
-  // align-items: center;
   justify-content: left;
   color: #565E6CFF;
   background: transparent;
@@ -183,7 +182,6 @@ $c-blue: rgb(111,150,255);
 /* Sidebar menu 20 - Item */
 .sidebar-menu-item {
   padding: 16px NaNpx;
-  // display: flex;
   justify-content: left;
   color: #565E6CFF;
   background: transparent;
@@ -206,16 +204,18 @@ $c-blue: rgb(111,150,255);
   fill: currentColor;
 }
 
-
-/* for the new alert page */
 .new-alert-page-background {
   background: #F9F9FAFF;
   font-family:var(--bs-body-font-family);
   color: #BCC1CAFF;
 }
 
+.new-alert-page-background .d-none {
+  background: white;
+  height: 100vh;
+}
+
 .rectangle {
-  // width: 1122px;
   height: 70vh;
   background: #F8F9FAFF;
   border-radius: 6px;
@@ -228,12 +228,21 @@ $c-blue: rgb(111,150,255);
 }
 
 .new-alert-modal {
-  // display: block;
   background:white;
   border-radius: 6px;
   box-shadow: 0px 4px 9px #DEE1E6FF, 0px 0px 2px #DEE1E6FF;
   color:#171A1FFF;
   vertical-align: middle;
+}
+
+.new-alert-modal h2 {
+  font-weight:bold; 
+  font-size: xx-large; 
+  margin-bottom:0;
+}
+
+.new-alert-modal form span {
+  font-size:small;
 }
 
 .product-details-page {
@@ -248,19 +257,105 @@ $c-blue: rgb(111,150,255);
   border-width: 1px;
 }
 
-.dropdown-item:active {
-  background-color:#{$dope-purple-0};
+.new-alert-page h1, .product-details-page h1, .myalertspage h1 {
+  font-weight: bold;
 }
 
-.badge {
-  background:#{$dope-purple-0};
+#loading {
+  display:none;
+}
+
+.missing {
+  color:red;
+}
+
+.product-details-rectangle .table {
+  border-color:white;
+}
+
+.product-details-rectangle h2, .product-details-rectangle h3 {
+  font-weight:bold;
+  margin-left:1%;
+  font-size: 16px;
+  margin-bottom:0;
+  line-height:24px;
+} 
+
+#custom_price {
+  width:20%;
+}
+
+/* home page */
+.index-banner h1 {
+  color: #{$dope-purple};
+  font-weight:bold;
+}
+
+.index-banner h2 {
+  font-size:27px;
+  line-height:32px;
+}
+
+#homepageinfo h2 {
   color:white;
-  font-size:small;
-  text-align: right;
 }
 
-.alert-warning, .alert-primary {
-  --bs-alert-bg: #{$dope-purple-lt};
-  --bs-alert-border-color: #{$dope-purple-3};
-  --bs-alert-color: #{$dope-purple};
+#homepageproducts h2 {
+  color:#{$dope-purple};
+}
+
+.caro-text span {
+  font-weight:bold;
+}
+
+#homepagebottomcta {
+  background-color:#FFAD05;
+}
+
+#heroimage {
+  margin-top:-2%; 
+  overflow-x:hidden;
+}
+
+#heroimage image {
+  max-width: 102%;
+  margin: left -1% right -1%;
+}
+
+#homepageinfobackground {
+  background-color:#661FFF; 
+  margin-top:-1%;
+}
+
+#homepageinfo {
+  opacity:0;
+}
+
+#homepageinfo img {
+  height:auto; 
+  max-width:30%;
+}
+
+
+/* Signup & Login */ 
+.signuplogin h1 {
+  text-align:center;
+  font-size:27px;
+  line-height:32px;
+}
+
+/* myalerts */
+.myalertspage div[class="row"] {
+  padding-bottom:30px;
+}
+
+.breadcrumbnav {
+  position:relative;
+}
+
+.breadcrumbnav span {
+  color: rgba(0, 0, 0, 0.55);
+  position: absolute;
+  bottom: 0; 
+  left: 1;
 }
