@@ -1,8 +1,5 @@
 // to apply changes, run sass variables.scss:variables.css -- have to be IN static/lulu_alerts
 
-
-$c-blue: rgb(111,150,255);
-
 // Global Styles
 // Color Variables
   $dope-purple-lt: #D5C9E7;
@@ -14,6 +11,7 @@ $c-blue: rgb(111,150,255);
   $outline-grey: #C2C2C2;
   $grey-0: #CCCCCC;
   $grey-1: #909090;
+  $c-blue: rgb(111,150,255);
 
 
 // Primary Button - Enabled state
@@ -313,7 +311,6 @@ $c-blue: rgb(111,150,255);
 }
 
 #heroimage {
-  margin-top:-2%; 
   overflow-x:hidden;
 }
 
