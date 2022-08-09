@@ -96,9 +96,9 @@ def price_drop_notif(alert):
         },
       }
     )
-    x = resp['requestId']
-    print(x)
-    return x
+    response_id = resp['requestId']
+    print(response_id)
+    return response_id
 
 def back_in_stock_check(alerts):
     back_in_stock_triggered_alerts = []
@@ -130,9 +130,9 @@ def back_in_stock_notif(alert):
             }
         }
     )
-    x = resp['requestId']
-    print(x)
-    return x
+    response_id = resp['requestId']
+    print(response_id)
+    return response_id
 
 def confirm_notif(notif_response_id):
     url = (f"https://api.courier.com/messages/{notif_response_id}")
@@ -141,10 +141,8 @@ def confirm_notif(notif_response_id):
     "Authorization":f"Bearer {AUTH_TOKEN}"
     }
     response = requests.request("GET", url, headers=headers)
-    x = json.loads(response.text)["status"]
-    print(x)
-    return x
-
+    status = json.loads(response.text)["status"]
+    return status
 
 
 def run():
@@ -155,41 +153,3 @@ def run():
 
 
 
-
-
-
-
-# URL HANDLING:
-
-# URL Processer: normalizes user provided URL into 2 urls to get for sale pages
-# def urls_alt(quote_page):
-#     urls={}
-#     p = urlparse(quote_page)
-#     cleanpath = p.path.split("_")[0] # removes the sku from the URL if its there
-#     if "-MD" not in p.path:
-#         urls["regular"] = urlunsplit((p.scheme,p.netloc,cleanpath,p.query,p.fragment))
-#         # store the reg url, the add the MD
-#         cleanpath = cleanpath.removesuffix("/") + "-MD/"
-#         urls["md"] = urlunsplit((p.scheme,p.netloc,cleanpath,p.query,p.fragment))
-#     else:
-#         urls["md"] = urlunsplit((p.scheme,p.netloc,cleanpath,p.query,p.fragment))
-#         # store the md url, then add the reg
-#         cleanpath = cleanpath.removesuffix("-MD/") + "/"
-#         urls["regular"] = urlunsplit((p.scheme,p.netloc,cleanpath,p.query,p.fragment))
-#     return urls
-
-
-# return the right url to look for for a particular product.
-# def confirm_url(url,product):
-#     p = get_product_details(url)
-#     if p['color'] != product.color or p['size'] != product.size:
-#         alt = urls_alt(url)
-#         if get_size(alt['md']) == product.size and get_color(alt['md']) == product.color:
-#             return alt['md']
-#         elif get_size(alt['url']) == product.size and get_color(alt['md']) == product.color:
-#             return alt['url']
-#         else:
-#             return None
-#     else:
-#         return url
-#     # all product details are on the product page its the right url, else process it
