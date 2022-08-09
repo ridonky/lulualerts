@@ -3,20 +3,19 @@ import os
 import django
 
 # can i make this setup conditional? IE: look for what the django settings module is then use it to import AUTH TOKEN
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'retail_alerts.settings')
-from retail_alerts.settings import AUTH_TOKEN
-# I DO NOT KNOW
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'retail_alerts.dev_settings')
+from retail_alerts.dev_settings import AUTH_TOKEN
 
 django.setup()
 
 # Modules for django models, scraping, and sending notifs
 from trycourier import Courier
-from lulu_alerts.models import Products, Alerts, Alert_Status, Notifications, Notif_Status, Notif_Origin
+from lulu_alerts.models import Alerts, Alert_Status, Notifications, Notif_Status
 from time import sleep
 from datetime import datetime
 import requests
 import json
-from scripts.scrape import price, stock_status #, get_product_details, get_size, get_color
+from scripts.scrape import price, stock_status 
 
 # Set up scheduler
 #reference: https://github.com/agronholm/apscheduler/blob/3.x/examples/schedulers/background.py
@@ -44,7 +43,7 @@ def price_drop_check(alerts):
                 # add to list & switch to triggered
                 alert.status = Alert_Status.objects.get(id=2)
                 alert.save()
-                price_drop_triggered_alerts.append(alert) # maybe here is where i turn the alert to triggered?
+                price_drop_triggered_alerts.append(alert)
             else:
                 # check the next alert. or maybe shoudl check the next url
                 print(f'no price drop for {alert}')
@@ -55,7 +54,7 @@ def price_drop_check(alerts):
     notify('price_drop',price_drop_triggered_alerts)
 
 def notify(alert_type,alerts):
-    for alert in alerts: # HERE DO A TRY EXCEPT! definitely.
+    for alert in alerts: # HERE DO A TRY EXCEPT!
         new_notif=Notifications(alert=alert,status=Notif_Status.objects.get(id=1))
         new_notif.save()
         print('created new notif')
@@ -151,7 +150,6 @@ def confirm_notif(notif_response_id):
 def run():
     scheduler = BackgroundScheduler()
     scheduler.add_job(alerts_check,'interval',minutes=30)
-    print('program running')
     scheduler.start()
     
 

@@ -9,8 +9,8 @@
         <div class="alert alert-primary" role="alert"> {{ message }} </div>
       </div> 
       {% endif %}
-      <div class="col-11 col-md-10 col-lg-8"> 
-        <h4 style="text-align:center;"> Login to your account </h4>
+      <div class="col-11 col-md-10 col-lg-8 signuplogin"> 
+        <h1> Login to your account </h1>
           <form class="border px-4 py-3 my-3 rounded bg-light" action ="{% url 'lulu_alerts:login' %}" method="POST">
               {% csrf_token %}
             <div class="row justify-content-center">
@@ -23,7 +23,7 @@
                 <input type="password" class="form-control" name="password" id="exampleInputPassword1">
               </div>
             </div>
-            <input type="submit" class="btn btn-primary mt-2 mx-3 px-3" value="login">
+            <input type="submit" class="btn btn-primary mt-2 mx-3 px-3" value="Login">
           </form>
           <div class="px-4">Don't have an account yet?  <a href="{% url 'lulu_alerts:signup' %}">Sign up here.</a></div>
       </div>
