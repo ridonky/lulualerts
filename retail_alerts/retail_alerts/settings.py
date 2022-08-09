@@ -23,31 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# # LOCAL
-# SECRET_KEY = str(os.getenv('SECRET_KEY'))
-# REMOTE
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # ADDED FOR SENDING EMAILS VIA COURIER
-# # LOCAL
-# AUTH_TOKEN = str(os.getenv('AUTH_TOKEN'))
-# REMOTE
 AUTH_TOKEN = os.environ['AUTH_TOKEN']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-# # old before heroku
-# ALLOWED_HOSTS = []
-# # end old before heroku
-
-# # new for heroku
-# ALLOWED_HOSTS = ['https://lulualerts.herokuapp.com/']
-# # end new for heroku
-
-# Allows all hosts
+# Allows correct hosts
 IS_HEROKU = "DYNO" in os.environ
-
 
 if IS_HEROKU:
     ALLOWED_HOSTS = ["*"]
@@ -120,16 +105,6 @@ WSGI_APPLICATION = 'retail_alerts.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# # START LOCAL
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-# # END LOCAL
-
-# START REMOTE
 DATABASES = {
     'default' : {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -173,32 +148,13 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-
-# STATIC FILE SETTINGS - OLD I GUESS
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'static') # this is fine, 100%
-    # STATIC_URL = "/static/" # this is fine, 90%
-
-    # STATICFILES_DIR = [os.path.join(BASE_DIR, 'static'),] # this is spelled wrong - have to change to DIRS and also test- its nto in github test
-
-    # # for whitenoise 
-    # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-    # django_heroku.settings(locals()) # NEED TO LOOK INTO! tried removing
-# END STATIC FILE SETTINGS
-
-# STATIC FILE SETTINGS _ NEW TEST _ COPY OF GITHUB EXAMPLE
+# STATIC FILE SETTINGS 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_URL = "/static/" 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # THIS IS PROB THE PROBLEM!??
 
 
-# add back in:
 django_heroku.settings(locals())
-
-# STATIC FILE SETTINGS _ END NEW TEST
 
 
 LOGGING = {
@@ -214,7 +170,6 @@ LOGGING = {
         'level': 'WARNING',
     }
 }
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
