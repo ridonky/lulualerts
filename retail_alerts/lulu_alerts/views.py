@@ -229,12 +229,10 @@ def newalertv2(request,alert_type):
                 "error":error
             })
         else: #form is not valid, give them whats there. - it may not have been a lulu URL!
-            print("fucking invalid form")
             return render(request,"lulu_alerts/newalert_v2.html",{
                 "product_form":product_form,
                 "alert_type":alert_type,
             })
-    print("treating it like a get req")
     return render(request, "lulu_alerts/newalert_v2.html", {
         "product_form": ProductQueryForm(),
         "alert_type": alert_type,
