@@ -1,5 +1,5 @@
 # lulu alerts
-![lulualerts logo](/lulu_alerts/static/lulu_alerts/big_icon.png)
+![lulualerts logo](retail_alerts/lulu_alerts/static/lulu_alerts/big_icon.png)
 
 ## Project overview
 lulu alerts makes sure consumers don't miss out on purchasing their favorite lululemon products as soon as they go on sale or come back in stock with notifications delivered to their inboxes 
