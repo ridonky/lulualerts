@@ -15,7 +15,7 @@
             {% endif %}
             alert</h1>
         <div class="product-details-rectangle py-3 mb-3 rounded">
-            <div class="container align-self-center">
+            <div class="container align-self-center mx-2">
                 <div class="row">
                     <h2 class="pb-3">
                         CONFIRM PRODUCT DETAILS
@@ -23,7 +23,7 @@
                 </div>
                 <div class="row">
                     <div class=col>
-                        <table class="table">
+                        <table class="table border-bottom">
                             <tbody>
                                 <tr>
                                     <th> Name </th>
@@ -104,8 +104,8 @@
             <form action="{% url 'lulu_alerts:newalert_confirmproduct' %}" id="new_alert" method="POST">
                 {% csrf_token %}
                 <div class="product-details-rectangle py-3 px-2 mb-3 rounded">
-                    <div class="container align-self-center mx-2">
-                        <table class="table border-bottom">
+                    <div class="container align-self-center">
+                        <table class="table">
                             <div class="row">
                                 <div class="col">
                                 <h3 class="pb-3">
