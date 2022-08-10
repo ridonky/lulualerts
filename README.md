@@ -38,7 +38,7 @@ Visit www.lulualerts.com! Here, you can browse the home page, login, and sign up
 - Making it free - add donations!! uptime robot
 - ux
 - user notifications improvement! text, more immediate
-- 
+- managing dev & prod envits w diff settings (static files etc)
  -->
 
 <!-- 
