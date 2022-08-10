@@ -2,10 +2,10 @@
 ![lulualerts logo](retail_alerts/lulu_alerts/static/lulu_alerts/big_icon.png)
 
 ## Project overview
-lulu alerts makes sure consumers don't miss out on purchasing their favorite lululemon products as soon as they go on sale or come back in stock with notifications delivered to their inboxes 
+lulu alerts makes sure shoppers don't miss out on purchasing their favorite lululemon products as soon as they go on sale or come back in stock with notifications delivered to their inboxes 
 
 ### Description
-lulu alerts is a web application for creating and managing alerts for lululemon products under a lulu alerts accounts. Users can configure two different types of alerts: (1) "back in stock" alerts, which tell a user when a particular product that is currently out of stock on lululemon.com shows back up on the website as in stock, as well as (2) "price drop" alerts, which tell a user when a particular product has fallen in price.  On an ongoing basis, the app checks lululemon.com to see if any of its user's configured alerts should be triggered by a particular product price change or product back in stock, and notifies users via email for any triggered alerts.
+lulu alerts is a web application for creating and managing alerts for lululemon products.  Users create lulu alerts accounts, then they can configure two different types of alerts: (1) "back in stock" alerts, which tell a user when a particular out of stock product shows back up on in stock on lululemon.com, as well as (2) "price drop" alerts, which tell a user when a particular product has fallen in price.  On an ongoing basis, the app checks lululemon.com to see if any of its user's configured alerts should be triggered by a particular product price change or product back in stock, and notifies them via email.
 
 ### Technologies
 - Python
@@ -21,17 +21,27 @@ lulu alerts is a web application for creating and managing alerts for lululemon 
 - [Courier](https://www.courier.com/)
 - [Visily](https://www.visily.ai/)
 - [IONOS](https://www.ionos.com/)
+- [UptimeRobot](https://uptimerobot.com/)
 
 <!-- ## Video Demo
  -->
 
 ## Use
-Visit [www.lulualerts.com](www.lulualerts.com). Here, you can browse the home page, sign up, and login pages.  Sign up for free to create and manage alerts as well as recieve notifications.
+Visit www.lulualerts.com! Here, you can browse the home page, login, and sign up pages, available to all visitors without accounts.  Sign up for free to create and manage alerts, as well as to recieve notifications.
+
+
+## Demo
+
 
 <!-- ## Challenges, Tradeoffs & future features
 - Handling user input
-- Making it free
+- Making it free - add donations!! uptime robot
+- ux
+- user notifications improvement! text, more immediate
+- managing dev & prod envits w diff settings (static files etc)
  -->
 
 <!-- 
-## Testing -->
+## Testing & monitoring -->
+
+<!-- ## Wading through code -->

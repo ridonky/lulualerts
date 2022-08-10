@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (document.querySelector('#homepageinfo').style.opacity == 0) {
                 
                 // suspend the event listener so it stops skipping
-                window._onscrollupholder = window.onscroll
-                window.onscroll = null;
+                // window._onscrollupholder = window.onscroll
+                // window.onscroll = null;
 
                 let id = null;
                 let opaque = 0;
                 clearInterval(id);
     
-                // Every 30ms, execute appear
+                // Every 50ms, execute appear
                 id = setInterval(appear, 50);
                 
                 function appear() {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         clearInterval(id);
 
                         // add back the event listener
-                        window.onscroll = window._onscrollupholder;
+                        // window.onscroll = window._onscrollupholder;
                     }
 
                     // Increase opacity by .1
@@ -35,12 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
             }
         }
-
         // otherwise, opacity = 0
         else {
             document.querySelector('#homepageinfo').style.opacity = 0;
         };
-    
     };
-
 });

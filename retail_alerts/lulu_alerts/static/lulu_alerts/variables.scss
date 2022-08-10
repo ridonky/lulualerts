@@ -287,11 +287,13 @@
 .index-banner h1 {
   color: #{$dope-purple};
   font-weight:bold;
+  font-size:calc(2rem + .9vw);
 }
 
 .index-banner h2 {
   font-size:27px;
   line-height:32px;
+  font-size: calc(1.2rem + .9vw);
 }
 
 #homepageinfo h2 {
