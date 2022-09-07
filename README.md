@@ -32,7 +32,7 @@ Visit www.lulualerts.com! Here, you can browse the home page, login, and sign up
 9/8/2022: lululemon has removed product data from their HTML, which the app relies on for scraping product attributes, so new alerts cannot be created. The www.lulualerts.com site remains active and functional for all other purposes.  There is a plan to migrate from the current approach (scrape HTML using python beautiful soup library) to a browser simulator (i.e. selenium).  No ETA at the moment.
 
 ## Demo
-Create and manage alerts:
+**Create and manage alerts:**
 ![create manage alerts](readme/createmanagealert.gif)
 <!-- 30fps,large -->
 
@@ -41,10 +41,10 @@ Login & Account creation:
 
 | Login:  |   Signup: |
 | ------- | ------- |
-| <img src="/readme/login.gif" width="50%" height="50%"/> | <img src="/readme/signup.gif" width="50%" height="50%"/> |
+| <img src="/readme/login.gif"> | <img src="/readme/signup.gif" /> |
 
 
-<img src="/readme/login.gif" width="50%" height="50%"/> <img src="/readme/signup.gif" width="50%" height="50%"/>
+<img src="/readme/login.gif" width="40%" height="40%"/> <img src="/readme/signup.gif" width="40%" height="40%"/>
 
 <!-- ## Challenges, Tradeoffs & future features
 - Handling user input
