@@ -39,10 +39,12 @@ Create and manage alerts:
 Login & Account creation:
 ![login](readme/login.gif) ![signup](readme/signup.gif)
 
-Login:  |   Signup:
-: ----- :|: ----- :
-<img src="/readme/login.gif" width="50%" height="50%"/> | <img src="/readme/signup.gif" width="50%" height="50%"/>
+| Login:  |   Signup: |
+| ------- | ------- |
+| <img src="/readme/login.gif" width="50%" height="50%"/> | <img src="/readme/signup.gif" width="50%" height="50%"/> |
 
+
+<img src="/readme/login.gif" width="50%" height="50%"/> <img src="/readme/signup.gif" width="50%" height="50%"/>
 
 <!-- ## Challenges, Tradeoffs & future features
 - Handling user input
