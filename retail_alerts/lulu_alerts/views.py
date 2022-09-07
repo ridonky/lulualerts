@@ -160,6 +160,7 @@ def newalertv2(request,alert_type):
                 request.session['product']=product # store it in the session instead of requiring args for now...
                 request.session['alert_type']=alert_type
                 request.session['url']=url
+                print(f'url is {url}, product is {product} alert_type is {alert_type}')
                 return HttpResponseRedirect(reverse("lulu_alerts:newalert_confirmproduct"))
             else:
                 error = lulu_url_check(url)
