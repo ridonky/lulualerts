@@ -36,7 +36,7 @@ Visit www.lulualerts.com! Here, you can browse the home page, login, and sign up
 <!-- 30fps,large -->
 
 **Login & Signup:**
-<img src="/readme/login.gif" alt="login" width="75%" height="75%"/> <img src="/readme/signup.gif" alt="signup" width="75%" height="75%"/>
+<img src="/readme/login.gif" alt="login"/> <img src="/readme/signup.gif" alt="signup"/>
 
 **Recieve email notifications:**
 ![email notification](readme/pricedropemail.png)
