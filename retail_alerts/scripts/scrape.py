@@ -9,26 +9,43 @@ def get_product_details(quote_page):
     details = {}
     product_name_box = soup.find('div',attrs={'itemprop':'name'})
     try:
-        product_name = product_name_box.text.strip()
-        details['name'] = product_name
+        # color
         details['color'] = get_color(quote_page)
+        # size
         details['size'] = get_size(quote_page)
+        # price & currency
         price_currency = price(quote_page)
-        details['in_stock'] = stock_status(quote_page)
         details['price'] = price_currency['price']
         details['currency'] = price_currency['currency']
+        # stock status
+        details['in_stock'] = stock_status(quote_page)
+        # url
         details['url'] = quote_page
+        # product name
+        product_name = product_name_box.text.strip()
+        details['name'] = product_name
         return details
     except AttributeError:
         return details
 
 
+# TESTING
+def product_name(quote_page):
+    request = requests.get(quote_page)
+    with open('request.txt','w') as req:
+        req.write(request.text)
+    # soup = BeautifulSoup(request.text,'xml')
+    # with open('soupdump_xml.txt', 'w') as f:
+    #     f.write(soup.prettify())
+
+# doesn't work
 def get_color(quote_page):
     request = requests.get(quote_page)
     soup = BeautifulSoup(request.text,'html.parser')
     color2 = soup.find('span',attrs={'class':'color-selection_colorNameValue__3m_yW'}).text
     return color2
 
+# doesn't work
 def get_size(quote_page):
     request=requests.get(quote_page)
     soup = BeautifulSoup(request.text,'html.parser')
@@ -40,6 +57,7 @@ def get_size(quote_page):
             size = child.text
             return size
 
+# doesn't work
 def stock_status(quote_page):
     request=requests.get(quote_page)
     soup = BeautifulSoup(request.text,'html.parser')
@@ -49,6 +67,7 @@ def stock_status(quote_page):
     else: #its out of stock
         return False
 
+# doesn't work
 # Get item price
 def price(quote_page):
     price_currency = {}
@@ -81,6 +100,7 @@ def price(quote_page):
         Exception
         return price_currency
 
+# doesn't work
 def get_photo(quote_page):
     request=requests.get(quote_page)
     soup = BeautifulSoup(request.text,'html.parser')
@@ -107,3 +127,10 @@ def get_photo(quote_page):
     if not validators.url(image):
         return None
     return image
+
+#out of stock qp:
+# quote_page = "https://shop.lululemon.com/p/shoes/W-Chargefeel-Workout-Low/_/prod11110147?color=57420&icid=cdp-footwear%3Astorypage%3B2b%3Bresponsiveimage%3Bpdp%3Achargefeel-low-w-workout-shoe%3Bcampaigns%3Bchargefeel&sz=8"
+
+# in stock
+quote_page="https://shop.lululemon.com/p/shoes/W-Chargefeel-Workout-Low/_/prod11110147?icid=cdp-footwear%3Astorypage%3B2b%3Bresponsiveimage%3Bpdp%3Achargefeel-low-w-workout-shoe%3Bcampaigns%3Bchargefeel&sz=8"
+product_name(quote_page)
