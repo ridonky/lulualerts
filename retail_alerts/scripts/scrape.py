@@ -2,6 +2,26 @@ from bs4 import BeautifulSoup
 import requests
 import validators
 
+
+# for the following product:
+# quote_page="https://shop.lululemon.com/p/skirts-and-dresses-dresses/Align-Bodysuit-8/_/prod10990067?color=52410&sz=4"
+
+# hardcoded product details
+def get_product_details_hard():
+    details = {}
+    details['color'] = 'Electric Lemon'
+    details['size'] = '4'
+    details['price'] = '128'
+    details['currency'] = 'USD'
+    details['url'] = "https://shop.lululemon.com/p/skirts-and-dresses-dresses/Align-Bodysuit-8/_/prod10990067?color=52410&sz=4"
+    details['in_stock'] = 'True'
+    details['name'] = 'lululemon Align™ Onesie 8"'
+    return details
+
+def get_photo_hard():
+    image = "https://images.lululemon.com/is/image/lululemon/LW1DSKS_052410_1?wid=1280&op_usm=0.5,2,10,0&fmt=webp&qlt=80,1&fit=constrain,0&op_sharpen=0&resMode=sharp2&iccEmbed=0&printRes=72"
+    return image
+
 # Get all product details
 def get_product_details(quote_page):
     request = requests.get(quote_page)

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import date
 
-from scripts.scrape import get_product_details, get_photo
+from scripts.scrape import get_product_details, get_photo, get_product_details_hard, get_photo_hard
 from django.contrib.auth.models import User
 from lulu_alerts.models import Products, Alerts, Alert_Status
 from scripts.alertscheck import run
@@ -155,7 +155,12 @@ def newalertv2(request,alert_type):
         if product_form.is_valid():
             url = product_form.cleaned_data['productquery']
             if lulu_url_check(url) == True:
-                product = get_product_details(url)
+                # non hardcoded
+                # product = get_product_details(url)
+                
+                # hardcoded
+                product = get_product_details_hard()
+
                 print("attempting to render next page")
                 request.session['product']=product # store it in the session instead of requiring args for now...
                 request.session['alert_type']=alert_type
@@ -185,8 +190,13 @@ def newalert_confirmproduct(request):
     product = request.session['product']
     url = request.session['url']
     alert_type = request.session['alert_type']
-    photo = get_photo(url)
-    print(photo)
+
+    # non hardcoded
+    # photo = get_photo(url)
+
+    # hardcoded
+    photo = get_photo_hard()
+
     if request.method == "POST":
         # for a price drop alert with a target price:
         price=request.POST["price"]
